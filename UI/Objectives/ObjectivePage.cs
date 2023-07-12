@@ -60,6 +60,7 @@ public class ObjectivePage : MonoBehaviour
         }
         else
         {
+
             SectionData.Add(updatedObjective);
             _totalNumberOfPages++;
         }

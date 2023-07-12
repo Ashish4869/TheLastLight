@@ -29,7 +29,7 @@ public class EnemySoundManager : MonoBehaviour
 
 
     #region Public Variables
-    public void StateChanged(EnemyState state)
+    public void StateChanged(EnemyState state)  
     {
         if (_enemyState == state) return;
 
@@ -65,3 +65,4 @@ public class EnemySoundManager : MonoBehaviour
     }
     #endregion
 }
+    

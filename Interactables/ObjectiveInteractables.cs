@@ -3,8 +3,9 @@ using UnityEngine;
 public class ObjectiveInteractables : Interactable
 {
     public ObjectiveManager.ObjectiveCompletion _objectiveToComplete;
-    public Notification _notif;
+    public Notification _CompletionNotif, _inCompleteNotif;
     public ObjectiveManager.ObjectiveCompletionPrerequisite _objectivePrequisite;
+    public bool _shouldShowInCompleteNotif;
     protected override void Interact()
     {
         base.Interact();
@@ -13,53 +14,13 @@ public class ObjectiveInteractables : Interactable
 
     public  void RunObjective()
     {
-        if(ObjectiveManager.Instance.CheckConditionForObjectiveCompletion(_objectiveToComplete, _notif, _objectivePrequisite))
+        if(ObjectiveManager.Instance.CheckConditionForObjectiveCompletion(_objectiveToComplete, _CompletionNotif, _objectivePrequisite))
         {
             Destroy(gameObject);
         }
-        switch (_objectiveCompletion)
+        else
         {
-            case ObjectiveManager.ObjectiveCompletion.ReceiveTaskFromOldMan:
-                ObjectiveManager.Instance.OnCompleteAssignedOldManTask(_notif);
-                break;
-
-            case ObjectiveManager.ObjectiveCompletion.ReceiveTaskFromSuperMarketOwner:
-                ObjectiveManager.Instance.OnCompleteAssignSuperMarketOwnerTask(_notif);
-                break;
-
-            case ObjectiveManager.ObjectiveCompletion.ObtainOldManCarKeys:
-                if (ObjectiveManager.Instance.HasOldManMeds())
-                {
-                    ObjectiveManager.Instance.OnCompleteObtainOldManMeds(_notif);
-                }
-                break;
-
-            case ObjectiveManager.ObjectiveCompletion.ObtainSuppliesFromSuperMarket:
-                ObjectiveManager.Instance.OnCompleteObtainSuppliesFromSuperMarket(_notif);
-                break;
-
-            case ObjectiveManager.ObjectiveCompletion.ObtainManagerRoomKeys:
-                if (ObjectiveManager.Instance.HasSupplies())
-                {
-                    ObjectiveManager.Instance.OnCompleteObtainedManagerRoomKeys(_notif);
-                }
-                break;
-
-            case ObjectiveManager.ObjectiveCompletion.ObtainMedsForOldMan:
-                ObjectiveManager.Instance.OnCompleteObtainedOldManMeds(_notif);
-                break;
-
-            case ObjectiveManager.ObjectiveCompletion.LeaveWellington:
-                if(ObjectiveManager.Instance.HasCarKeys())
-                {
-                    UIManager.Instance.HideUI();
-                    GameManager.Instance.PlayCutscene();
-                }
-                else
-                {
-                    UIManager.Instance.TriggerNotification(_notif);
-                }
-                break;
+           if(_shouldShowInCompleteNotif) UIManager.Instance.TriggerNotification(_inCompleteNotif);
         }
     }
    

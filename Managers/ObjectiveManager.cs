@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ObjectiveManager : MonoBehaviour
@@ -24,13 +25,17 @@ public class ObjectiveManager : MonoBehaviour
     public enum ObjectiveCompletion
     {
         //Level 1
+        //Main
         ReceiveTaskFromOldMan,
         ObtainMedsForOldMan,
         ObtainOldManCarKeys,
+        LeaveWellington,
+
+        //Side
         ReceiveTaskFromSuperMarketOwner,
         ObtainSuppliesFromSuperMarket,
-        ObtainManagerRoomKeys,
-        LeaveWellington
+        ObtainManagerRoomKeys
+       
     }
 
     public enum ObjectiveCompletionPrerequisite
@@ -77,46 +82,95 @@ public class ObjectiveManager : MonoBehaviour
     bool HasCarKeys() => _hasCarKeys;
 
     void ObtainedManagerRoomKeys() => _hasManagerRoomKeys = true;
-    bool HasManagerRoomKeys() => _hasManagerRoomKeys;
+    public bool HasManagerRoomKeys() => _hasManagerRoomKeys;
 
     void CompleteObjective(ObjectiveCompletion objectiveToComplete)
     {
+        switch(objectiveToComplete)
+        {
+            //Main
+            case ObjectiveCompletion.ReceiveTaskFromOldMan:
+                OnCompleteAssignedOldManTask();
+                break;
 
+            case ObjectiveCompletion.ObtainMedsForOldMan:
+                OnCompleteObtainedOldManMeds();
+                break;
+
+            case ObjectiveCompletion.ObtainOldManCarKeys:
+                OnCompleteObtainedCarKeys();
+                break;
+
+            case ObjectiveCompletion.LeaveWellington:
+                OnCompleteLeaveWellington();
+                break;
+
+            //Side
+            case ObjectiveCompletion.ReceiveTaskFromSuperMarketOwner:
+                OnCompleteAssignSuperMarketOwnerTask();
+                break;
+
+            case ObjectiveCompletion.ObtainSuppliesFromSuperMarket:
+                OnCompleteObtainSuppliesFromSuperMarket();
+                break;
+
+            case ObjectiveCompletion.ObtainManagerRoomKeys:
+                OnCompleteObtainedManagerRoomKeys();
+                    break;
+        }
     }
 
-    void OnCompleteAssignedOldManTask(Notification notif)
+    private void OnCompleteLeaveWellington()
+    {
+        UIManager.Instance.HideUI();
+        GameManager.Instance.PlayCutscene();
+    }
+
+    private void OnCompleteObtainedCarKeys()
+    {
+        ObtainedCarKeys();
+        UpdateObjectivePage(3, 1, true);
+    }
+
+    void OnCompleteAssignedOldManTask()
     {
         UpdateObjectivePage(1, 0, true);
     }
 
-    void OnCompleteAssignSuperMarketOwnerTask(Notification notif)
+    void OnCompleteAssignSuperMarketOwnerTask()
     {
         UpdateObjectivePage(5, 0, false);
     }
 
-    void OnCompleteObtainOldManMeds(Notification notif)
-    {
-        ObtainedCarKeys();
-        UpdateObjectivePage(3, 1, false);
-    }
-
-    void OnCompleteObtainSuppliesFromSuperMarket(Notification notif)
+   
+    void OnCompleteObtainSuppliesFromSuperMarket()
     {
         ObtainedSupplies();
+        StrikeOutPreviousPage(5); //strike out page
+        _ObjectivePage.SideObjectiveDataUpdate(_objectiveData.Data[5], 0); //update page
+        UpdateObjectivePage(6, 1, false);
     }
 
-    void OnCompleteObtainedManagerRoomKeys(Notification notif)
+    void OnCompleteObtainedManagerRoomKeys()
     {
         ObtainedManagerRoomKeys();
+        UpdateObjectivePage(7, 1, false);
     }
 
-    void OnCompleteObtainedOldManMeds(Notification notif)
+    void OnCompleteObtainedOldManMeds()
     {
         ObtainedOldManMeds();
+        StrikeOutPreviousPage(1); //strike out page
+        _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[1], 0); //update page
         UpdateObjectivePage(2, 1, true);
     }
 
+    
 
+    private void StrikeOutPreviousPage(int PageNo)
+    {
+        _objectiveData.Data[PageNo] = "<s>" + _objectiveData.Data[PageNo] + "</s>";
+    }
     #endregion
 
     #region Public Methods
@@ -124,65 +178,55 @@ public class ObjectiveManager : MonoBehaviour
 
     public void UpdateObjectivePage(int ObjectiveID, int page, bool IsShouldDoObjective)
     {
-        //clearing previous objective
-        _objectiveData.StrikeOutPreviousObjective(ObjectiveID);
-
-
         if(IsShouldDoObjective) _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[ObjectiveID], page);
         else _ObjectivePage.SideObjectiveDataUpdate(_objectiveData.Data[ObjectiveID], page);
-
     }
-
 
     //Objective Completion results
     public bool CheckConditionForObjectiveCompletion(ObjectiveCompletion objectiveToComplete, Notification notification, ObjectiveCompletionPrerequisite objectivePrerequisite)
     {
+        bool CanRunObjective = false;
         if(ObjectiveCompletionPrerequisite.None == objectivePrerequisite)
         {
-            UIManager.Instance.TriggerNotification(notification);
-            CompleteObjective(objectiveToComplete);
+            CanRunObjective = true;
         }
         else
         {
-            switch(objectivePrerequisite)
+            switch(objectivePrerequisite) //check prerequisites
             {
                 case ObjectiveCompletionPrerequisite.ShouldHaveOldManMeds:
-                    if (HasOldManMeds())
-                    {
-                        CompleteObjective(objectiveToComplete);
-                    }
-                    else return false;
+                    if (HasOldManMeds()) CanRunObjective = true;
                     break;
 
                 case ObjectiveCompletionPrerequisite.ShouldHaveCarKeys:
-                    if (HasCarKeys())
-                    {
-                        CompleteObjective(objectiveToComplete);
-                    }
-                    else return false;
+                    if (HasCarKeys()) CanRunObjective = true;
                     break;
 
                 case ObjectiveCompletionPrerequisite.ShouldHaveManagerRoomKeys:
-                    if (HasManagerRoomKeys())
-                    {
-                        CompleteObjective(objectiveToComplete);
-                    }
-                    else return false;
+                    if (HasManagerRoomKeys()) CanRunObjective = true;
                     break;
 
                 case ObjectiveCompletionPrerequisite.ShouldHaveSupplies:
-                    if (HasSupplies())
-                    {
-                        CompleteObjective(objectiveToComplete);
-                    }
-                    else return false;
+                    if (HasSupplies()) CanRunObjective = true;
                     break;
             }
         }
 
-        return true;
+        if (CanRunObjective)
+        {
+            UIManager.Instance.TriggerNotification(notification);
+            CompleteObjective(objectiveToComplete);
+        }
+
+        return CanRunObjective;
     }
 
-   
+
+    public void OnCompleteVisitingManagersRoom()
+    {
+        StrikeOutPreviousPage(6); //strike out page
+        _ObjectivePage.SideObjectiveDataUpdate(_objectiveData.Data[6], 0); //update page
+    }
+
     #endregion
 }

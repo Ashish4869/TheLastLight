@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     bool _isInDialouge = false;
 
     [SerializeField] PlayableDirector _cutscene;
+    [SerializeField] GameObject _cutSceneCam;
 
 
     #endregion
@@ -134,6 +135,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayCutscene()
     {
+        _cutSceneCam.SetActive(true);
         _player.SetActive(false);
         _cutscene.Play();
     }
