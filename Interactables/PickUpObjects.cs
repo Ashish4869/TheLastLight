@@ -23,6 +23,7 @@ public class PickUpObjects : Interactable
                 {
                     GameManager.Instance.PickedUpHealthPack();
                     AudioManager.Instance.PlaySFX("MedPickUp");
+                    UIManager.Instance.TriggerNotification(_notif);
                     Destroy(gameObject);
                     return;
                 }
