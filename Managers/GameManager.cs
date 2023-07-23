@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     bool _isGamePaused = false;
     bool _isInDialouge = false;
+    bool _isInCar = false;
 
     [SerializeField] PlayableDirector _cutscene;
     [SerializeField] GameObject _cutSceneCam;
@@ -64,11 +65,7 @@ public class GameManager : MonoBehaviour
 
     #region MonoBehviour CallBacks
 
-    Vector3 point = Vector3.zero;
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(point, 0.25f);
-    }
+   
     #endregion
 
     #region Public Functions
@@ -95,7 +92,6 @@ public class GameManager : MonoBehaviour
     public void ShowBloodParticleEffect(RaycastHit EnemyBodyPart)
     {
         ImplantBloodDecal(EnemyBodyPart);
-        point = EnemyBodyPart.point;
         GameObject bloodSplash = Instantiate(_bloodSplash, EnemyBodyPart.transform);
         bloodSplash.transform.position = EnemyBodyPart.point + EnemyBodyPart.normal * 0.1f;
         bloodSplash.transform.LookAt(EnemyBodyPart.point + EnemyBodyPart.normal);
@@ -139,6 +135,25 @@ public class GameManager : MonoBehaviour
         _player.SetActive(false);
         _cutscene.Play();
     }
+
+    //Car Mechanics
+    public void HidePlayer()
+    {
+        _isInCar = true;
+        _player.SetActive(false);
+    }
+
+    public void TransitionToPlayer()
+    {
+        _isInCar = false;
+        _player.SetActive(true);
+    }
+
+    public void PlacePlayerNearCar(Vector3 CarPosition)
+    {
+        _player.transform.position = CarPosition + Vector3.left * 2 + Vector3.up;
+    }
+
     #endregion
 
     #region Private Functions

@@ -17,7 +17,6 @@ public class PlayerInteract : MonoBehaviour
 
         RaycastHit hitinfo;
         Ray ray = new Ray(_cam.transform.position, _cam.transform.forward);
-        Debug.DrawLine(ray.origin, ray.direction * _distance);
 
         if(Physics.Raycast(ray,out hitinfo,_distance, _interactable))
         {
