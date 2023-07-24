@@ -4,29 +4,40 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//Moves the car based on input
+/// <summary>
+/// Moves the car based on input
+/// Checks for input for exiting car and changing gears
+/// Manages Engine Sounds to be played
+/// </summary>
 
 public class CarMovement : MonoBehaviour
 {
     float _normalSpeed = 10, _turnForce = 100f, _speed = 0f, _highGearSpeed = 15f;
-    bool _IsInHighGear = false, _shouldChangeAudio = true;
-    string _audioName;
+    bool _IsInHighGear = false;
+    string _audioName, _prevAudioName = "Null";
 
     [SerializeField] Transform _frontLeftWheel;
     [SerializeField] Transform _frontRightWheel;
     [SerializeField] Transform _rearLeftWheel;
     [SerializeField] Transform _rearRightWheel;
+    CarGearUIManager _carGearUIManager;
+
+    private void Start()
+    {
+        _carGearUIManager = (CarGearUIManager)GetComponent("CarGearUIManager");
+    }
 
     // Update is called once per frame
     void Update()
     {
         Movement();
         CheckForInput();
+        PlayEngineSound();
     }
 
     private void CheckForInput()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E)) //Get out of the car
         {
             GetOutOfCar();
             DisableCar();
@@ -36,6 +47,8 @@ public class CarMovement : MonoBehaviour
         {
             _IsInHighGear = !_IsInHighGear;
             AudioManager.Instance.PlaySFX("ShiftGear");
+            _carGearUIManager.UpdateGearUI(_IsInHighGear);
+
         }
         
     }
@@ -46,6 +59,7 @@ public class CarMovement : MonoBehaviour
         Transform CameraPivot = parent.Find("CameraPivot");
         ResetCarInteractablePostion(parent);
         DisableCamera(CameraPivot);
+        AudioManager.Instance.StopPlayingAudio(_audioName); 
         enabled = false;
     }
 
@@ -73,7 +87,7 @@ public class CarMovement : MonoBehaviour
     {
         //Set speed as per gear
         _speed = _IsInHighGear ? _highGearSpeed : _normalSpeed;
-        _audioName = _IsInHighGear ? "CarForward" : "CarForwardHigh";
+        _audioName = _IsInHighGear ? "CarForwardHigh" : "CarForward";
 
         //Input
         float HInput = Input.GetAxis("Horizontal");
@@ -91,11 +105,9 @@ public class CarMovement : MonoBehaviour
     {
         if (vinput == 0)
         {
-            _shouldChangeAudio = true;
+            _audioName = "CarIdle";
             return; //no need to move wheels if the car is not moving
         }
-
-        PlayEngineSound();
 
         bool IsCarMovingForward = vinput > 0 ? true : false;
         float TurnRotationAmountY = 30f;
@@ -120,9 +132,13 @@ public class CarMovement : MonoBehaviour
 
     private void PlayEngineSound()
     {
-        if (!_shouldChangeAudio) return;
-        AudioManager.Instance.PlaySFX(_audioName);
-        _shouldChangeAudio = false;
+        if (_prevAudioName != _audioName)
+        {
+            AudioManager.Instance.StopPlayingAudio(_prevAudioName);
+            AudioManager.Instance.PlaySFX(_audioName);
+            _prevAudioName = _audioName;
+        }
+       
     }
 
     private void TurnWheels(bool isCarMovingForward)

@@ -21,7 +21,7 @@ public class Car : Interactable
     private void HidePlayerAndUI()
     {
         GameManager.Instance.HidePlayer();
-        UIManager.Instance.DisableUIForCar();
+        UIManager.Instance.SetUpUIForCar();
     }
 
     void TransitionToCar()

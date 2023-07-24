@@ -49,6 +49,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Animator _Objective;
     [SerializeField] GameObject _LoadOutParent;
     [SerializeField] GameObject _interactivePromptMessage;
+    [SerializeField] GameObject _carGearUI;
 
     [SerializeField] GameObject _notificationPrefab;
     TextMeshProUGUI _speaker, _dialouge;
@@ -345,11 +346,12 @@ public class UIManager : MonoBehaviour
 
 
     //Car Mechanics
-    public void DisableUIForCar()
+    public void SetUpUIForCar()
     {
         _LoadOutParent.SetActive(false);
         _interactivePromptMessage.SetActive(false);
         _CrossHair.SetActive(false);
+        _carGearUI.SetActive(true);
     }
 
     public void EnableUIFromCar()
@@ -357,6 +359,7 @@ public class UIManager : MonoBehaviour
         _LoadOutParent.SetActive(true);
         _interactivePromptMessage.SetActive(true);
         _CrossHair.SetActive(true);
+        _carGearUI.SetActive(false);
     }
     #endregion
 }
