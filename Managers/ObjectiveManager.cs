@@ -1,5 +1,6 @@
-using System;
+using UnityEngine.SceneManagement;
 using UnityEngine;
+using System;
 
 public class ObjectiveManager : MonoBehaviour
 {
@@ -34,8 +35,15 @@ public class ObjectiveManager : MonoBehaviour
         //Side
         ReceiveTaskFromSuperMarketOwner,
         ObtainSuppliesFromSuperMarket,
-        ObtainManagerRoomKeys
-       
+        ObtainManagerRoomKeys,
+
+        //Level 2
+        //Main
+        ObtainFoodAndWater,
+        ObtainPlaceToStay,
+
+        //Side
+        ObtainShotGun
     }
 
     public enum ObjectiveCompletionPrerequisite
@@ -45,7 +53,10 @@ public class ObjectiveManager : MonoBehaviour
         ShouldHaveOldManMeds,
         ShouldHaveSupplies,
         ShouldHaveCarKeys,
-        ShouldHaveManagerRoomKeys
+        ShouldHaveManagerRoomKeys,
+
+        //Level 2
+        ShouldHaveFoodWater
     }
 
     #region Variables
@@ -53,6 +64,8 @@ public class ObjectiveManager : MonoBehaviour
     bool _hasSupplies = false;
     bool _hasCarKeys = false;
     bool _hasManagerRoomKeys = false;
+
+    bool _hasFoodAndWater;
 
     ObjectivePage _ObjectivePage;
     ObjectiveData _objectiveData = new ObjectiveData();
@@ -66,8 +79,21 @@ public class ObjectiveManager : MonoBehaviour
 
     private void Start()
     {
-        _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[0], 0);
-        _ObjectivePage.SideObjectiveDataUpdate(_objectiveData.Data[4], 0);
+        int level = SceneManager.GetActiveScene().buildIndex;
+
+        switch (level)
+        {
+            case 0:
+                _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[0], 0);
+                _ObjectivePage.SideObjectiveDataUpdate(_objectiveData.Data[4], 0);
+                break;
+
+            case 1:
+                _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[8], 0);
+                _ObjectivePage.SideObjectiveDataUpdate(_objectiveData.Data[10], 0);
+                break;
+
+        }
     }
     #endregion
 
@@ -117,7 +143,16 @@ public class ObjectiveManager : MonoBehaviour
             case ObjectiveCompletion.ObtainManagerRoomKeys:
                 OnCompleteObtainedManagerRoomKeys();
                     break;
+
+            case ObjectiveCompletion.ObtainShotGun:
+                OnCompleteObtainedShotGun();
+                break;
         }
+    }
+
+    private void OnCompleteObtainedShotGun()
+    {
+        UpdateObjectivePage(11, 0, false);
     }
 
     private void OnCompleteLeaveWellington()
@@ -176,10 +211,10 @@ public class ObjectiveManager : MonoBehaviour
     #region Public Methods
 
 
-    public void UpdateObjectivePage(int ObjectiveID, int page, bool IsShouldDoObjective)
+    public void UpdateObjectivePage(int ObjectiveIndex, int page, bool IsMainObjective)
     {
-        if(IsShouldDoObjective) _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[ObjectiveID], page);
-        else _ObjectivePage.SideObjectiveDataUpdate(_objectiveData.Data[ObjectiveID], page);
+        if(IsMainObjective) _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[ObjectiveIndex], page);
+        else _ObjectivePage.SideObjectiveDataUpdate(_objectiveData.Data[ObjectiveIndex], page);
     }
 
     //Objective Completion results

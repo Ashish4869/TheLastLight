@@ -42,7 +42,29 @@ public class ObjectiveData
         // 7 - Visit manager room - Page 2
          "<s>Better give this supplies back to the supermarket owner so that I can get the key to the managers room.</s>"
             + "\n\n" +
-        "Now let's see what awaits us in the Manager's room."
+        "Now let's see what awaits us in the Manager's room.",
+
+
+
+        //************** LEVEL 2 ********************
+        //---- Main Objectives ----
+        // 8 - find food and water
+        "I will need some food and drinking water in order to survive the night, hopefully there is some village or house nearby",
+
+        // 9 - Find place to stay at the night
+         "<s> I will need some food and drinking water in order to survive the night, hopefully there is some village or house nearby </s>" 
+            + "\n\n" +
+        "Its not safe to keep driving at the night, the odds are stacked against me. It would be nice to find a place to stay for the night.",
+
+        // ---- Side Objectives
+        // 10 - Get gun
+        "As I try to find food and water, if I could get a gun along the way, that would be awesome.",
+
+        // 11 - Got Gun
+         "<s>As I try to find food and water, if I could get a gun along the way, that would be awesome.</s>"
+         + "\n\n" +
+           "With this shotgun, no zombie can stop me now!"
+
     };
 
    

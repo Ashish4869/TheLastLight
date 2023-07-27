@@ -92,8 +92,6 @@ public class ObjectivePage : MonoBehaviour
         UpdatePage();
     }
 
-    
-  
     #endregion
 
 }

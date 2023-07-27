@@ -6,6 +6,8 @@ public class PickUpObjects : Interactable
     public Weapon.Gun Gun;
     public Weapon.AmmoType ammo;
     public Notification _notif;
+
+    public bool _isObjectiveItem;
     #endregion
 
     #region Private Methods
@@ -35,6 +37,12 @@ public class PickUpObjects : Interactable
                 player.PickedUpWeapon(Gun);
             }
         }
+
+        if(_isObjectiveItem)
+        {
+            GetComponent<ObjectiveInteractables>().RunObjective();
+        }
+
         Destroy(gameObject);
     }
 
