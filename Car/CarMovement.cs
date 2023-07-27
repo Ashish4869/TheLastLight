@@ -21,10 +21,25 @@ public class CarMovement : MonoBehaviour
     [SerializeField] Transform _rearLeftWheel;
     [SerializeField] Transform _rearRightWheel;
     CarGearUIManager _carGearUIManager;
+    BoxCollider _boxCollider;
 
+    private void Awake()
+    {
+        _boxCollider = (BoxCollider)GetComponent("BoxCollider");
+    }
     private void Start()
     {
         _carGearUIManager = (CarGearUIManager)GetComponent("CarGearUIManager");
+    }
+
+    private void OnEnable()
+    {
+        _boxCollider.enabled = true;
+    }
+
+    private void OnDisable()
+    {
+        _boxCollider.enabled = false;
     }
 
     // Update is called once per frame

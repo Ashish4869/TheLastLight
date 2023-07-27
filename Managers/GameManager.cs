@@ -20,7 +20,8 @@ public class GameManager : MonoBehaviour
 
     bool _isGamePaused = false;
     bool _isInDialouge = false;
-    bool _isInCar = false;
+    bool _isInCar = true;
+
 
     [SerializeField] PlayableDirector _cutscene;
     [SerializeField] GameObject _cutSceneCam;
@@ -154,6 +155,7 @@ public class GameManager : MonoBehaviour
         _player.transform.position = CarPosition + Vector3.left * 2 + Vector3.up;
     }
 
+    public bool IsPlayerInCar() => _isInCar;
     #endregion
 
     #region Private Functions

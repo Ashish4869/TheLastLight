@@ -13,7 +13,6 @@ public class TriggerGameHint : MonoBehaviour
         {
             _gameHint.GetComponent<Animator>().SetTrigger("ShowHint");
             _gameHint.GetComponentInChildren<TextMeshProUGUI>().text = _hintText;
-
             Destroy(gameObject);
         }
     }

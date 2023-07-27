@@ -63,7 +63,7 @@ public class UIManager : MonoBehaviour
 
     #region MonoBehaviour CallBacks
     
-    void Start()
+    void Awake()
     {
         _PistolHighligth.SetActive(true);
         _PistolSlider = GameObject.Find("LoadOut/LoadOutBG/Pistol/AmmoBarPistol").GetComponent<Slider>();
@@ -71,6 +71,8 @@ public class UIManager : MonoBehaviour
         _ShotGunSLider = GameObject.Find("LoadOut/LoadOutBG/ShotGun/AmmoBarShotGun").GetComponent<Slider>();
         _speaker = _DialougueBox.transform.Find("DialougeBox/Speaker").GetComponent<TextMeshProUGUI>();
         _dialouge = _DialougueBox.transform.Find("DialougeBox/Dialouge").GetComponent<TextMeshProUGUI>();
+
+        if (GameManager.Instance.IsPlayerInCar()) SetUpUIForCar();
 
         EventManager.OnPlayerDeath += DisableUI;
     }

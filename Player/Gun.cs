@@ -8,10 +8,8 @@ public class Gun : MonoBehaviour
     Transform PlayerEyes;
     Transform _currentMuzzleFlashPos;
 
-    public GameObject BulletHolePrefab;
     public GameObject PistolMuzzleFlash;
     public GameObject ShotgunMuzzleFlash;
-    public GameObject HitMarkerPrefab;
     public Weapon[] _loadout;
     [HideInInspector] public Weapon CurrentGunData;
     public Transform _weaponParent;
@@ -120,7 +118,6 @@ public class Gun : MonoBehaviour
     #endregion
 
     #region Private Methods
-
     void Die()
     {
         enabled = false;
@@ -152,7 +149,6 @@ public class Gun : MonoBehaviour
             EquipGun(3);
         }
     }
-
 
     void WeaponFireMechanics()
     {
@@ -425,12 +421,8 @@ public class Gun : MonoBehaviour
                 }
                 else if (Physics.Raycast(PlayerEyes.position, Spray, out hitinfo, 1000, _CanBeShot)) //spawn a random bullet hole if we dont hit a enemy
                 {
-                    GameObject BulletHole = Instantiate(BulletHolePrefab, hitinfo.point + hitinfo.normal * 0.001f , Quaternion.identity);
-                    GameObject HitMarker = Instantiate(HitMarkerPrefab, hitinfo.point, Quaternion.LookRotation(hitinfo.normal));
-                    BulletHole.transform.LookAt(hitinfo.point + hitinfo.normal);
-                    Destroy(BulletHole, 5f);
-                    Destroy(HitMarker, 3f);
-
+                    BulletHolePool.Take(hitinfo.point, hitinfo.normal);
+                    HitMarkerPool.Take(hitinfo.point, Quaternion.LookRotation(hitinfo.normal));
                     _firstBullet = false;
                 } 
             }
