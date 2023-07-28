@@ -60,12 +60,14 @@ public class ObjectiveManager : MonoBehaviour
     }
 
     #region Variables
+    //Level 1
     bool _hasOldManMeds = false;
     bool _hasSupplies = false;
     bool _hasCarKeys = false;
     bool _hasManagerRoomKeys = false;
 
-    bool _hasFoodAndWater;
+    //Level 2
+    bool _hasFoodAndWater = false;
 
     ObjectivePage _ObjectivePage;
     ObjectiveData _objectiveData = new ObjectiveData();
@@ -110,11 +112,15 @@ public class ObjectiveManager : MonoBehaviour
     void ObtainedManagerRoomKeys() => _hasManagerRoomKeys = true;
     public bool HasManagerRoomKeys() => _hasManagerRoomKeys;
 
+    void ObtainedFoodAndWater() => _hasFoodAndWater = true;
+    bool HasFoodWater() => _hasFoodAndWater;
+
     void CompleteObjective(ObjectiveCompletion objectiveToComplete)
     {
         switch(objectiveToComplete)
         {
             //Main
+            //Level 1
             case ObjectiveCompletion.ReceiveTaskFromOldMan:
                 OnCompleteAssignedOldManTask();
                 break;
@@ -131,7 +137,18 @@ public class ObjectiveManager : MonoBehaviour
                 OnCompleteLeaveWellington();
                 break;
 
+            //Level 2
+            case ObjectiveCompletion.ObtainFoodAndWater:
+                OnCompleteObtainedFoodAndWater();
+                break;
+
+            case ObjectiveCompletion.ObtainPlaceToStay:
+                OnCompletePlaceToStay();
+                break;
+
+
             //Side
+            //Level 1
             case ObjectiveCompletion.ReceiveTaskFromSuperMarketOwner:
                 OnCompleteAssignSuperMarketOwnerTask();
                 break;
@@ -144,10 +161,22 @@ public class ObjectiveManager : MonoBehaviour
                 OnCompleteObtainedManagerRoomKeys();
                     break;
 
+             //Level 2
             case ObjectiveCompletion.ObtainShotGun:
                 OnCompleteObtainedShotGun();
                 break;
         }
+    }
+
+    private void OnCompletePlaceToStay()
+    {
+        Debug.Log("Play cutscene and move to level 3");
+    }
+
+    private void OnCompleteObtainedFoodAndWater()
+    {
+        ObtainedFoodAndWater();
+        UpdateObjectivePage(9,0,true);
     }
 
     private void OnCompleteObtainedShotGun()
@@ -229,6 +258,7 @@ public class ObjectiveManager : MonoBehaviour
         {
             switch(objectivePrerequisite) //check prerequisites
             {
+                //Level 1
                 case ObjectiveCompletionPrerequisite.ShouldHaveOldManMeds:
                     if (HasOldManMeds()) CanRunObjective = true;
                     break;
@@ -243,6 +273,11 @@ public class ObjectiveManager : MonoBehaviour
 
                 case ObjectiveCompletionPrerequisite.ShouldHaveSupplies:
                     if (HasSupplies()) CanRunObjective = true;
+                    break;
+
+                //Level 2
+                case ObjectiveCompletionPrerequisite.ShouldHaveFoodWater:
+                    if (HasFoodWater()) CanRunObjective = true;
                     break;
             }
         }
