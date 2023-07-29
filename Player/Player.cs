@@ -379,7 +379,6 @@ public class Player : MonoBehaviour
     }
 
     public void PickedUpWeaponAmmo(Weapon.AmmoType Ammo, Notification notif) => _weapon.GotAmmo(Ammo, notif);
-    public void ShowPickedUpNotif(string info) => UIManager.Instance.ShowPickUpInfo(info);
 
     #endregion
 }

@@ -12,16 +12,26 @@ using UnityEngine;
 
 public class CarMovement : MonoBehaviour
 {
+    #region Variables
     float _normalSpeed = 10, _turnForce = 100f, _speed = 0f, _highGearSpeed = 15f;
-    bool _IsInHighGear = false;
+    bool _IsInHighGear = false, _carTotalled = false;
     string _audioName, _prevAudioName = "Null";
 
+    [Header("Wheels")]
     [SerializeField] Transform _frontLeftWheel;
     [SerializeField] Transform _frontRightWheel;
     [SerializeField] Transform _rearLeftWheel;
     [SerializeField] Transform _rearRightWheel;
+
+    [Header("Notification")]
+    [SerializeField] Notification _notif;
+
+
     CarGearUIManager _carGearUIManager;
     BoxCollider _boxCollider;
+    #endregion
+
+    #region MonoBehaviour Callbacks
 
     private void Awake()
     {
@@ -49,13 +59,19 @@ public class CarMovement : MonoBehaviour
         CheckForInput();
         PlayEngineSound();
     }
+    #endregion
 
+    #region Private Methods
+
+   
     private void CheckForInput()
     {
-        if (Input.GetKeyDown(KeyCode.E)) //Get out of the car
+        if (Input.GetKeyDown(KeyCode.E) || _carTotalled) //Get out of the car
         {
             GetOutOfCar();
             DisableCar();
+
+            if (_carTotalled) UIManager.Instance.TriggerNotification(_notif);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -63,9 +79,7 @@ public class CarMovement : MonoBehaviour
             _IsInHighGear = !_IsInHighGear;
             AudioManager.Instance.PlaySFX("ShiftGear");
             _carGearUIManager.UpdateGearUI(_IsInHighGear);
-
         }
-        
     }
 
     private void DisableCar()
@@ -100,6 +114,8 @@ public class CarMovement : MonoBehaviour
 
     private void Movement()
     {
+        if (_carTotalled) return;
+
         //Set speed as per gear
         _speed = _IsInHighGear ? _highGearSpeed : _normalSpeed;
         _audioName = _IsInHighGear ? "CarForwardHigh" : "CarForward";
@@ -165,4 +181,9 @@ public class CarMovement : MonoBehaviour
         _rearLeftWheel.localRotation *= rotationAmount;
         _rearRightWheel.localRotation *= rotationAmount;
     }
+    #endregion
+
+    #region Public Methods
+    public void CarTotalled() => _carTotalled = true;
+    #endregion
 }

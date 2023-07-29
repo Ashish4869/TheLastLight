@@ -12,6 +12,7 @@ public enum NotificationID
     MedPack,
     LockedDoor,
     MissionObjective,
-    SideMissionObjective
+    SideMissionObjective,
+    CarTotalled
 }
 

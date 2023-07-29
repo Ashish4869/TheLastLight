@@ -285,13 +285,9 @@ public class UIManager : MonoBehaviour
 
     public void ShowCrosshair() => _CrossHair.SetActive(true);
 
-    public void ShowPickUpInfo(string info)
-    {
-    }
-
     public void HideUI()
     {
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void SetUpDialougeUI()
