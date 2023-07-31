@@ -59,10 +59,14 @@ public class Player : MonoBehaviour
         _playerEyes = GameObject.Find("PlayerHead/PlayerEyes").GetComponent<Camera>();
         _WeaponCam = GameObject.Find("PlayerHead/WeaponCam").GetComponent<Camera>();
         _weaponParent = GameObject.Find("Weapon").GetComponent<Transform>();
-        _PlayerSphereCollider = GetComponent<SphereCollider>();
+        _PlayerSphereCollider = GetComponent<SphereCollider>();  
+    }
 
+    private void OnEnable()
+    {
         EventManager.OnPlayerDeath += Die;
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -323,7 +327,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Enemy")
+        if(other.CompareTag("Enemy"))
         {
             if(other.gameObject != null)
             {
@@ -352,6 +356,7 @@ public class Player : MonoBehaviour
 
     void Die()
     {
+        Debug.Log("Hello, Time to die");
         GetComponent<Animator>().enabled = true;
         GetComponent<Animator>().SetTrigger("Death");
        enabled = false;

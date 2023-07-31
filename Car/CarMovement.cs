@@ -8,6 +8,7 @@ using UnityEngine;
 /// Moves the car based on input
 /// Checks for input for exiting car and changing gears
 /// Manages Engine Sounds to be played
+/// Size of the collider which attracts zombies 
 /// </summary>
 
 public class CarMovement : MonoBehaviour
@@ -23,12 +24,19 @@ public class CarMovement : MonoBehaviour
     [SerializeField] Transform _rearLeftWheel;
     [SerializeField] Transform _rearRightWheel;
 
+    [Header("Lights")]
+    [SerializeField] Light _frontLeftLight;
+    [SerializeField] Light _frontRightLight;
+    [SerializeField] Light _rearLeftLight;
+    [SerializeField] Light _rearRightLight;
+
     [Header("Notification")]
     [SerializeField] Notification _notif;
 
 
     CarGearUIManager _carGearUIManager;
     BoxCollider _boxCollider;
+    EventManager _eventManager;
     #endregion
 
     #region MonoBehaviour Callbacks
@@ -36,6 +44,7 @@ public class CarMovement : MonoBehaviour
     private void Awake()
     {
         _boxCollider = (BoxCollider)GetComponent("BoxCollider");
+        _eventManager = FindAnyObjectByType<EventManager>();
     }
     private void Start()
     {
@@ -45,11 +54,25 @@ public class CarMovement : MonoBehaviour
     private void OnEnable()
     {
         _boxCollider.enabled = true;
+        _frontLeftLight.enabled = true;
+        _frontRightLight.enabled = true;
+        _rearLeftLight.enabled = true;
+        _rearRightLight.enabled = true;
+
+        gameObject.tag = "Player";
+        _eventManager.OnPlayerEnterExitCarEvent();
     }
 
     private void OnDisable()
     {
         _boxCollider.enabled = false;
+        _frontLeftLight.enabled = false;
+        _frontRightLight.enabled = false;
+        _rearLeftLight.enabled = false;
+        _rearRightLight.enabled = false;
+
+        gameObject.tag = "Untagged";
+        _eventManager.OnPlayerEnterExitCarEvent();
     }
 
     // Update is called once per frame
@@ -59,11 +82,22 @@ public class CarMovement : MonoBehaviour
         CheckForInput();
         PlayEngineSound();
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Enemy"))
+        {
+            if (other.gameObject != null)
+            {
+                other.gameObject.GetComponentInParent<EnemyAI>().SensedPlayer();
+            }
+        }
+    }
     #endregion
 
     #region Private Methods
 
-   
+
     private void CheckForInput()
     {
         if (Input.GetKeyDown(KeyCode.E) || _carTotalled) //Get out of the car
@@ -84,6 +118,7 @@ public class CarMovement : MonoBehaviour
 
     private void DisableCar()
     {
+        
         Transform parent = transform.parent;
         Transform CameraPivot = parent.Find("CameraPivot");
         ResetCarInteractablePostion(parent);

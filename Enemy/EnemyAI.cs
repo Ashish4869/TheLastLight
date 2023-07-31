@@ -57,6 +57,7 @@ public class EnemyAI : MonoBehaviour
         _Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         _ZombieAnimator = GetComponent<Animator>();
         _enemySoundManager = GetComponent<EnemySoundManager>();
+        EventManager.OnPlayerEnterExitCar += ChangeTarget;
     }
     // Start is called before the first frame update
     void Start()
@@ -105,7 +106,11 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    
+
+    private void OnDestroy()
+    {
+        EventManager.OnPlayerEnterExitCar -= ChangeTarget;
+    }
 
     //Drawing Gizmos for better visualizations and debugging
     private void OnDrawGizmos()
@@ -126,8 +131,6 @@ public class EnemyAI : MonoBehaviour
     #endregion
 
     #region Private Functions
-   
-
     void Wander()
     {
         if(_wanderPoint.x == Mathf.Infinity) //sometimes we get infinity wander points idk why
@@ -240,6 +243,11 @@ public class EnemyAI : MonoBehaviour
             _ZombieAnimator.SetBool("Chasing", false);
         }
     }
+
+    void ChangeTarget()
+    {
+        _Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+    }
     #endregion
 
     #region Public Functions
@@ -248,6 +256,5 @@ public class EnemyAI : MonoBehaviour
         _enemyState = EnemyState.Chasing; //chase the player if sound is made within the range of perception of sound or 6th sense
         
     }
-    
     #endregion
 }
