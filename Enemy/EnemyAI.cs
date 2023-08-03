@@ -25,6 +25,7 @@ public enum EnemyState
 [RequireComponent(typeof(HealthManager))]
 [RequireComponent(typeof(Attack))]
 [RequireComponent(typeof(RagdollDeath))]
+[RequireComponent(typeof(EnemySoundManager))]
 public class EnemyAI : MonoBehaviour
 {
     #region Variables

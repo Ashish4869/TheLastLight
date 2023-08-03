@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     bool _isGamePaused = false;
     bool _isInDialouge = false;
-    bool _isInCar = true;
+    bool _isInCar = false;
 
 
     [SerializeField] PlayableDirector _cutscene;

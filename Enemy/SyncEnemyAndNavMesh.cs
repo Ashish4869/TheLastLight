@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>
 /// This syncs the rigidbody position of the player with the transform updated by navmesh, this will result in blooddecal being detected and placed appropritaley
 /// </summary>
+
 public class SyncEnemyAndNavMesh : MonoBehaviour
 {
     Rigidbody _enemyRoot;
