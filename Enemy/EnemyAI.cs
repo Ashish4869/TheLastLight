@@ -39,6 +39,7 @@ public class EnemyAI : MonoBehaviour
     public float _ChaseSpeed;
     public bool _isWanderEnemy;
     public Transform[] _wayPoints;
+    public bool _isBoss;
 
     private float _attackDistance = 2f;
     private float _fov = 120f;
@@ -49,6 +50,9 @@ public class EnemyAI : MonoBehaviour
     private float _FindingEnemyTimer;
     private float _SearchingTime = 5f;
     private bool _playerDead;
+    private bool _canAttackAgain = true;
+
+    
     #endregion
 
     #region MonoBehaviourCallBacks
@@ -59,6 +63,12 @@ public class EnemyAI : MonoBehaviour
         _ZombieAnimator = GetComponent<Animator>();
         _enemySoundManager = GetComponent<EnemySoundManager>();
         EventManager.OnPlayerEnterExitCar += ChangeTarget;
+
+        if(_isBoss)
+        {
+            _fov = 360;
+            _visibilityDistanceThreshold = 1000f;
+        }
     }
     // Start is called before the first frame update
     void Start()
@@ -106,6 +116,7 @@ public class EnemyAI : MonoBehaviour
             Attack();
         }
     }
+
 
 
     private void OnDestroy()

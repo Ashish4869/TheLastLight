@@ -95,6 +95,10 @@ public class ObjectiveManager : MonoBehaviour
                 _ObjectivePage.SideObjectiveDataUpdate(_objectiveData.Data[10], 0);
                 break;
 
+            case 2:
+                _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[12], 0);
+                _ObjectivePage.SideObjectiveDataUpdate("", 0);
+                break;
         }
     }
     #endregion

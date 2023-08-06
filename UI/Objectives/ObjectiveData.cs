@@ -63,7 +63,18 @@ public class ObjectiveData
         // 11 - Got Gun
          "<s>As I try to find food and water, if I could get a gun along the way, that would be awesome.</s>"
          + "\n\n" +
-           "With this shotgun, no zombie can stop me now!"
+           "With this shotgun, no zombie can stop me now!",
+
+
+         //************* LEVEL 3 ********************
+         //---- Main Objective ----
+         // 12 - kill all enemies
+         "The helicopter with these zombies in the way, I will have to kill them all.",
+
+         //13 Kill boss
+         "<s>The helicopter cannot land with these zombies in the way, I will have to kill them all.</s>"
+            + "\n\n" +
+         "The sound of the helicopter attracted this massive monster, I will do whatever it takes to kill this thing."
 
     };
 
