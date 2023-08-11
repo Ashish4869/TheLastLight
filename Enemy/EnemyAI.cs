@@ -81,6 +81,8 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_isBoss) return;
+
         //try to detect the player only if he is undetected by this enemy
         if(_enemyState == EnemyState.Wandering)
         {
@@ -214,7 +216,7 @@ public class EnemyAI : MonoBehaviour
 
     }
 
-    void ChasePlayer()
+    public void ChasePlayer()
     {
         _agent.speed = _ChaseSpeed;
         _agent.isStopped = false;
@@ -227,7 +229,7 @@ public class EnemyAI : MonoBehaviour
         if (Vector3.Distance(transform.position, _Target.position) < _attackDistance) _enemyState = EnemyState.Attacking;
     }
 
-    void Attack()
+    public void Attack()
     {
         _ZombieAnimator.SetBool("Attacking", true);
         _agent.speed = 0;
@@ -267,6 +269,11 @@ public class EnemyAI : MonoBehaviour
     {
         _enemyState = EnemyState.Chasing; //chase the player if sound is made within the range of perception of sound or 6th sense
         
+    }
+
+    public void SetChaseSpeed(float speed)
+    {
+        _ChaseSpeed = speed;
     }
     #endregion
 }

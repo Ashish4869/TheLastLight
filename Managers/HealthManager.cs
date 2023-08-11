@@ -11,6 +11,9 @@ public class HealthManager : MonoBehaviour
     [SerializeField]
     private bool _isEnemy;
 
+    [SerializeField]
+    private bool _isBoss;
+
     EventManager _eventManager;
     private bool _imDead = false;
 
@@ -70,9 +73,26 @@ public class HealthManager : MonoBehaviour
     {
         _health -= damage;
 
+        if(_isBoss)
+        {
+            Debug.Log(_health); 
+            if(_health <= 500)
+            {
+                GetComponent<Animator>().SetBool("IsEnraged", true);
+            }
+        }
+
         if (_health <= 0)
         {
-            Death(Falldirection, BodyPart);
+            if(_isBoss)
+            {
+                GetComponent<Animator>().SetTrigger("Death");
+            }
+            else
+            {
+                Death(Falldirection, BodyPart);
+            }
+            
         }
     }
 

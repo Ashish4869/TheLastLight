@@ -343,7 +343,8 @@ public class Player : MonoBehaviour
 
         for(int i =0; i<Enemies.Length; i++) //loop through and alert enemy if caught within the sphere
         {
-            Enemies[i].GetComponentInParent<EnemyAI>().SensedPlayer();
+            EnemyAI ai = Enemies[i].GetComponentInParent<EnemyAI>();
+            if(ai) ai.SensedPlayer();
         }
 
 
