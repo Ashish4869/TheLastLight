@@ -10,6 +10,7 @@ public class HealthManager : MonoBehaviour
     #region Variables
     [SerializeField]
     private bool _isEnemy;
+    bool _isDead = false;
 
     [SerializeField]
     private bool _isBoss;
@@ -71,11 +72,11 @@ public class HealthManager : MonoBehaviour
     #region Public Methods
     public void TakeDamage(float damage , Vector3 Falldirection, Rigidbody BodyPart)
     {
+        if (_isDead) return;
         _health -= damage;
 
         if(_isBoss)
         {
-            Debug.Log(_health); 
             if(_health <= 500)
             {
                 GetComponent<Animator>().SetBool("IsEnraged", true);
@@ -87,6 +88,9 @@ public class HealthManager : MonoBehaviour
             if(_isBoss)
             {
                 GetComponent<Animator>().SetTrigger("Death");
+                GetComponentInParent<BossHandler>().HandlePostBossDeath();
+                _isDead = true;
+                return;
             }
             else
             {

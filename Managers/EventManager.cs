@@ -14,6 +14,9 @@ public class EventManager : MonoBehaviour
     public delegate void PlayerEnterExitCar();
     public static event PlayerEnterExitCar OnPlayerEnterExitCar;
 
+    public delegate void BossDead();
+    public static event BossDead OnBossDefeated;
+
     //Fired when the player dies
     public void OnPlayerDeathEvent()
     {
@@ -29,6 +32,15 @@ public class EventManager : MonoBehaviour
         if(OnPlayerEnterExitCar != null)
         {
             OnPlayerEnterExitCar();
+        }
+    }
+
+    //Fired when we have killed the boss
+    public void OnBossDefeatedEvent()
+    {
+        if(OnBossDefeated != null)
+        {
+            OnBossDefeated();
         }
     }
 

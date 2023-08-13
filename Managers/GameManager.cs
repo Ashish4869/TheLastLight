@@ -156,6 +156,12 @@ public class GameManager : MonoBehaviour
     }
 
     public bool IsPlayerInCar() => _isInCar;
+
+    //When we kill the boss enemy
+    public void PlayLandHelicopterAnimation()
+    {
+
+    }
     #endregion
 
     #region Private Functions

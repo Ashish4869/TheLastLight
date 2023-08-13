@@ -5,10 +5,27 @@ using UnityEngine;
 public class Rotate : MonoBehaviour
 {
     float _speed = 10f;
+    bool _isBossDead = false;
+
+    private void Start()
+    {
+        EventManager.OnBossDefeated += LandHelicopter;
+    }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(Vector3.up * _speed *  Time.deltaTime);
+        if (_isBossDead) return;
+         transform.Rotate(Vector3.up * _speed * Time.deltaTime);
+    }
+
+    public void LandHelicopter()
+    {
+        _isBossDead = true;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnBossDefeated += LandHelicopter;
     }
 }

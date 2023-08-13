@@ -69,12 +69,19 @@ public class ObjectiveData
          //************* LEVEL 3 ********************
          //---- Main Objective ----
          // 12 - kill all enemies
-         "The helicopter with these zombies in the way, I will have to kill them all.",
+         "The helicopter cannot land with all these zombies in the way, I will have to kill them all.",
 
          //13 Kill boss
-         "<s>The helicopter cannot land with these zombies in the way, I will have to kill them all.</s>"
+         "<s>The helicopter cannot land with all these zombies in the way, I will have to kill them all.</s>"
             + "\n\n" +
-         "The sound of the helicopter attracted this massive monster, I will do whatever it takes to kill this thing."
+         "The sound of the helicopter blades attracted this massive monster, I will have to do whatever it takes to kill this thing.",
+
+          //14 Killed boss
+         "<s>The helicopter cannot land with all these zombies in the way, I will have to kill them all.</s>"
+            + "\n\n" +
+         "<s>The sound of the helicopter blades attracted this massive monster, I will have to do whatever it takes to kill this thing.</s>"
+            +"\n\n"+
+            "Time to get on the helicopter and end this nightmare."
 
     };
 
