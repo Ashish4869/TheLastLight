@@ -65,8 +65,8 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region MonoBehviour CallBacks
+  
 
-   
     #endregion
 
     #region Public Functions
@@ -157,11 +157,17 @@ public class GameManager : MonoBehaviour
 
     public bool IsPlayerInCar() => _isInCar;
 
-    //When we kill the boss enemy
-    public void PlayLandHelicopterAnimation()
+    //Cutscene related
+    public void CutSceneFinished()
     {
-
+        _player.GetComponent<Player>().enabled = true;
     }
+
+    public void StartCutscene()
+    {
+        _player.GetComponent<Player>().enabled = false;
+    }
+    
     #endregion
 
     #region Private Functions

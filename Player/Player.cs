@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
         _weapon = GetComponent<Gun>();
         _playerEyes = GameObject.Find("PlayerHead/PlayerEyes").GetComponent<Camera>();
         _WeaponCam = GameObject.Find("PlayerHead/WeaponCam").GetComponent<Camera>();
-        _weaponParent = GameObject.Find("Weapon").GetComponent<Transform>();
+        _weaponParent = GameObject.Find("Weapon").GetComponent<Transform>();    
         _PlayerSphereCollider = GetComponent<SphereCollider>();  
     }
 
