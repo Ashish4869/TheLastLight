@@ -116,7 +116,6 @@ public class HealthManager : MonoBehaviour
 
 
         _health -= damage;
-        Debug.Log(_health);
         AudioManager.Instance.PlaySFX("Damage" + Random.Range(1, 3).ToString());
         GameManager.Instance.ShowDamageOverlay();
         GameManager.Instance.SetPlayerHealth(_health);
