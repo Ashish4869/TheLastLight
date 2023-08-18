@@ -9,35 +9,31 @@ using UnityEngine.Video;
 public class CutSceneManager : MonoBehaviour
 {
     #region Variables
-    VideoPlayer _vidoePlayer;
+    VideoPlayer _videoPlayer;
     [SerializeField] VideoClip[] _cutscenes;
-    bool _isCutscenePlaying = true;
     int _currentCutsceneIndex = 0;
     [SerializeField] Camera _cutSceneCamera;
     #endregion
 
     #region Monobehaviour Callbacks
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         SetupCutscene();
-        PlayCutscene();
-    }
-
-    private void SetupCutscene()
-    {
-        _vidoePlayer = (VideoPlayer)GetComponent("VideoPlayer");
-        _vidoePlayer.loopPointReached += CutSceneEnded;
-        GameManager.Instance.StartCutscene();
     }
     #endregion
 
     #region Private Methods
+    private void SetupCutscene()
+    {
+        _videoPlayer = (VideoPlayer)GetComponent("VideoPlayer");
+        _videoPlayer.loopPointReached += CutSceneEnded;
+    }
+  
+  
     void CutSceneEnded(VideoPlayer vp)
     {
-        _vidoePlayer.enabled = false;
+        _videoPlayer.enabled = false;
         _cutSceneCamera.enabled = false;
-        _isCutscenePlaying = false;
         GameManager.Instance.CutSceneFinished();
     }
     #endregion
@@ -45,13 +41,17 @@ public class CutSceneManager : MonoBehaviour
     #region Public Methods
     public void PlayCutscene()  
     {
-        _vidoePlayer.enabled = true;
+        _videoPlayer.enabled = true;
         _cutSceneCamera.enabled = true; 
-        _vidoePlayer.clip = _cutscenes[_currentCutsceneIndex++];
+        _videoPlayer.clip = _cutscenes[_currentCutsceneIndex++];
     }
 
-    public bool IsCutScenePlaying() => _isCutscenePlaying;
-   
+    public void StartCutscene()
+    {
+        SetupCutscene();
+        PlayCutscene();
+    }
+
     #endregion
 
 

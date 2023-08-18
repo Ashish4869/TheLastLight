@@ -22,8 +22,9 @@ public class GameManager : MonoBehaviour
     bool _isInDialouge = false;
     bool _isInCar = false;
 
+    int _currentLevel = 3;
 
-    [SerializeField] PlayableDirector _cutscene;
+
     [SerializeField] GameObject _cutSceneCam;
 
 
@@ -58,15 +59,15 @@ public class GameManager : MonoBehaviour
         _instance = this;
 
         DontDestroyOnLoad(gameObject);
-
-       
-        
     }
     #endregion
 
     #region MonoBehviour CallBacks
-  
 
+    private void Start()
+    {
+        PlayCutscene();
+    }
     #endregion
 
     #region Public Functions
@@ -132,9 +133,9 @@ public class GameManager : MonoBehaviour
 
     public void PlayCutscene()
     {
+        FindAnyObjectByType<EventManager>().OnStartCutsceneEvent();
+        FindAnyObjectByType<CutSceneManager>().PlayCutscene();
         _cutSceneCam.SetActive(true);
-        _player.SetActive(false);
-        _cutscene.Play();
     }
 
     //Car Mechanics
@@ -160,13 +161,12 @@ public class GameManager : MonoBehaviour
     //Cutscene related
     public void CutSceneFinished()
     {
-        _player.GetComponent<Player>().enabled = true;
+        FindAnyObjectByType<EventManager>().OnEndCutsceneEvent();
     }
 
-    public void StartCutscene()
-    {
-        _player.GetComponent<Player>().enabled = false;
-    }
+    //Game Data
+    public int GetCurrentLevel() => _currentLevel;
+
     
     #endregion
 

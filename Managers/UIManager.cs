@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -55,7 +56,7 @@ public class UIManager : MonoBehaviour
     TextMeshProUGUI _speaker, _dialouge;
     Slider _PistolSlider, _AKSlider, _ShotGunSLider;
 
-    bool _isCritical = true, _showObjective = false;
+    bool _isCritical = true, _showObjective = false,  _isInCutscene = false;
     bool _IsdialougeAnimating = false;
     public float _damageTimer = 2f; 
     #endregion
@@ -72,14 +73,27 @@ public class UIManager : MonoBehaviour
         _speaker = _DialougueBox.transform.Find("DialougeBox/Speaker").GetComponent<TextMeshProUGUI>();
         _dialouge = _DialougueBox.transform.Find("DialougeBox/Dialouge").GetComponent<TextMeshProUGUI>();
 
-        if (GameManager.Instance.IsPlayerInCar()) SetUpUIForCar();
+        //if we are in level 2
+        
+        if(GameManager.Instance.GetCurrentLevel() == 2)
+        {
+            if (GameManager.Instance.IsPlayerInCar()) SetUpUIForCar();
+        }
+       
 
         EventManager.OnPlayerDeath += DisableUI;
+        EventManager.OnEndCutscene += EnableUIAfterCutscene;
+        EventManager.OnStartCutscene += DisableUIBeforeCutscene;
     }
+
+    
+
+
 
     // Update is called once per frame
     void Update()
     {
+       if (_isInCutscene) return;
 
        if(Input.GetKeyDown(KeyCode.Tab))
        {
@@ -130,6 +144,7 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         EventManager.OnPlayerDeath -= DisableUI;
+        EventManager.OnEndCutscene -= EnableUIAfterCutscene;
     }
 
     private void DisableUI()
@@ -140,11 +155,24 @@ public class UIManager : MonoBehaviour
 
         StartCoroutine(DeathUI());
     }
+    private void EnableUIAfterCutscene()
+    {
+        _isInCutscene = true;
+        _CrossHair.SetActive(true);
+        _LoadOutParent.SetActive(true);
+    }
+
+    private void DisableUIBeforeCutscene()
+    {
+        _isInCutscene = false;
+        _CrossHair.SetActive(false);
+        _LoadOutParent.SetActive(false);
+    }
 
     #endregion
 
     #region Public Methods
-   
+
 
     public void ReloadGame()
     {

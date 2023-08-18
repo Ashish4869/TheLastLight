@@ -18,7 +18,7 @@ public class Gun : MonoBehaviour
     public GameObject ReloadingText;
     public bool _isAiming = false;
 
-    bool _isReloading, _cantShoot, _firstBullet, _isSprinting;
+    bool _isReloading, _cantShoot, _firstBullet, _isSprinting, _isInCutscene = false;
     bool _OneGetMouseButtonUp;
     int _currentIndex = 99;
     bool _HasAK47 = true, _HasShotGun = true;
@@ -29,7 +29,6 @@ public class Gun : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         foreach (Weapon gun in _loadout)
         {
             gun.Initialise();
@@ -39,6 +38,8 @@ public class Gun : MonoBehaviour
         EquipGun(1);
 
         EventManager.OnPlayerDeath += Die;
+        EventManager.OnStartCutscene += DisableGunBeforeCutscene;
+        EventManager.OnEndCutscene += EnableGunAfterCutscene;
     }
 
    
@@ -46,6 +47,7 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_isInCutscene) return;
         if (GameManager.Instance.GamePaused()) return;
 
         ChooseGun();
@@ -114,6 +116,8 @@ public class Gun : MonoBehaviour
     private void OnDisable()
     {
         EventManager.OnPlayerDeath -= Die;
+        EventManager.OnStartCutscene -= DisableGunBeforeCutscene;
+        EventManager.OnEndCutscene -= EnableGunAfterCutscene;
     }
     #endregion
 
@@ -122,6 +126,9 @@ public class Gun : MonoBehaviour
     {
         enabled = false;
     }
+
+    void DisableGunBeforeCutscene() => _isInCutscene = true;
+    void EnableGunAfterCutscene() => _isInCutscene = false;
 
     void ChooseGun()
     {

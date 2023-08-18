@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
     bool isAiming = false;
     bool _isLanded = false;
     bool _playerTired = false;
+    bool _isInCutscene = false;
 
     private float _SlowWalkSoundRaduis = 1.5f;
     private float _walkSoundRaduis = 5f;
@@ -65,6 +66,8 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnPlayerDeath += Die;
+        EventManager.OnStartCutscene += DisablePlayerBeforeCutscene;
+        EventManager.OnEndCutscene += EnablePlayerAfterCutscene;
     }
 
     // Start is called before the first frame update
@@ -77,6 +80,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (_isInCutscene) return;
         //input
         float HorizontalMovement = Input.GetAxisRaw("Horizontal");
         float VerticalMovement = Input.GetAxisRaw("Vertical");
@@ -285,6 +289,8 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (_isInCutscene) return;
+
         //input
         float HorizontalMovement = Input.GetAxisRaw("Horizontal");
         float VerticalMovement = Input.GetAxisRaw("Vertical");
@@ -357,15 +363,26 @@ public class Player : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("Hello, Time to die");
         GetComponent<Animator>().enabled = true;
         GetComponent<Animator>().SetTrigger("Death");
-       enabled = false;
+        enabled = false;
+    }
+
+    void DisablePlayerBeforeCutscene()
+    {
+        _isInCutscene = true;
+    }
+
+    void EnablePlayerAfterCutscene()
+    {
+        _isInCutscene = false;
     }
 
     private void OnDisable()
     {
         EventManager.OnPlayerDeath -= Die;
+        EventManager.OnStartCutscene -= DisablePlayerBeforeCutscene;
+        EventManager.OnEndCutscene -= EnablePlayerAfterCutscene;
     }
     #endregion
 

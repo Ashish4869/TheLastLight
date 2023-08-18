@@ -19,10 +19,10 @@ public class ZombieCounter : MonoBehaviour
     {
         if(transform.childCount == 0)
         {
-            Debug.Log("Summon the boss");
             _enemyBoss.SetActive(true);
             UIManager.Instance.TriggerNotification(_notif);
             ObjectiveManager.Instance.UpdateObjectivePage(13, 0, true);
+            GameManager.Instance.PlayCutscene();
             CancelInvoke();
         }
     }

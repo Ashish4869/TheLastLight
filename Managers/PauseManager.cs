@@ -11,6 +11,8 @@ public class PauseManager : MonoBehaviour
     
     [SerializeField] GameObject _pauseUI;
     [SerializeField] GameObject _crossHairUI;
+
+    bool _isInCutscene = false;
     #endregion
 
     #region MonoBehaviour Callbacks
@@ -20,10 +22,15 @@ public class PauseManager : MonoBehaviour
         volume.profile.TryGetSettings(out _colorGrading);
         _colorGrading.postExposure.value = 0f;
         _colorGrading.saturation.value = 0;
+
+        EventManager.OnStartCutscene += DisablePauseBeforeCutscene;
+        EventManager.OnEndCutscene += EnablePauseAfterCutscene;
     }
 
     private void Update()
     {
+        if (_isInCutscene) return;
+
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             _colorGrading.saturation.value = -100;
@@ -37,6 +44,20 @@ public class PauseManager : MonoBehaviour
     }
     #endregion
 
+    #region Private Methods
+    void EnablePauseAfterCutscene()
+    {
+        _isInCutscene = false;
+    }
+
+    void DisablePauseBeforeCutscene()
+    {
+        _isInCutscene = true;
+    }
+    #endregion
+
+    #region Public Methods
+
     public void Resume()
     {
         Time.timeScale = 1f;
@@ -49,6 +70,13 @@ public class PauseManager : MonoBehaviour
     }
 
     public void Quit() => Application.Quit();
+
+    private void OnDisable()
+    {
+        EventManager.OnStartCutscene -= DisablePauseBeforeCutscene;
+        EventManager.OnEndCutscene -= EnablePauseAfterCutscene;
+    }
+    #endregion
 
 
 }

@@ -17,6 +17,12 @@ public class EventManager : MonoBehaviour
     public delegate void BossDead();
     public static event BossDead OnBossDefeated;
 
+    public delegate void StartCutscene();
+    public static event StartCutscene OnStartCutscene;
+
+    public delegate void EndCutscene();
+    public static event EndCutscene OnEndCutscene;
+
     //Fired when the player dies
     public void OnPlayerDeathEvent()
     {
@@ -41,6 +47,24 @@ public class EventManager : MonoBehaviour
         if(OnBossDefeated != null)
         {
             OnBossDefeated();
+        }
+    }
+
+    //Fired when we start a cutscene
+    public void OnStartCutsceneEvent()
+    {
+        if(OnStartCutscene != null)
+        {
+            OnStartCutscene();
+        }
+    }
+
+    //Fired when a cutscene is over
+    public void OnEndCutsceneEvent()
+    {
+        if(OnEndCutscene != null)
+        {
+            OnEndCutscene();
         }
     }
 
