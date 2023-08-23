@@ -19,11 +19,17 @@ public class ZombieCounter : MonoBehaviour
     {
         if(transform.childCount == 0)
         {
-            _enemyBoss.SetActive(true);
+            StartCoroutine(SpawnBoss());
             UIManager.Instance.TriggerNotification(_notif);
             ObjectiveManager.Instance.UpdateObjectivePage(13, 0, true);
             GameManager.Instance.PlayCutscene();
             CancelInvoke();
         }
+    }
+
+    IEnumerator SpawnBoss()
+    {
+        yield return new WaitForSeconds(60);
+        _enemyBoss.SetActive(true);
     }
 }

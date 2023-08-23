@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Implements Singleton Pattern
@@ -13,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] GameObject[] _crateSpawnItem; //we store elementes that can be picked up
     [SerializeField] GameObject _player;
+    [SerializeField] GameObject _levelLoader;
     
     [Header("Blood Stuff")] //once done, try putting it in another script
     [SerializeField] GameObject _bloodSplash;
@@ -136,6 +135,7 @@ public class GameManager : MonoBehaviour
         FindAnyObjectByType<EventManager>().OnStartCutsceneEvent();
         FindAnyObjectByType<CutSceneManager>().PlayCutscene();
         _cutSceneCam.SetActive(true);
+        _levelLoader.SetActive(false);
     }
 
     //Car Mechanics
@@ -162,6 +162,13 @@ public class GameManager : MonoBehaviour
     public void CutSceneFinished()
     {
         FindAnyObjectByType<EventManager>().OnEndCutsceneEvent();
+        _levelLoader.SetActive(true);
+    }
+
+    public void LoadlevelAfterCutscene()
+    {
+        _levelLoader.SetActive(true);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     //Game Data

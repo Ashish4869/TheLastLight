@@ -7,9 +7,17 @@ public class PlayerInteract : MonoBehaviour
     Camera _cam;
     float _distance = 2f;
     [SerializeField] LayerMask _interactable;
+
+    bool _isInCutscene = false;
     #endregion
 
     #region MonoBehaviour Callbacks
+
+    private void Start()
+    {
+        EventManager.OnStartCutscene += EnterCutscene;
+        EventManager.OnEndCutscene += ExitCutscene;
+    }
 
     void Update()
     {
@@ -23,9 +31,12 @@ public class PlayerInteract : MonoBehaviour
             Interactable InteractableObject = hitinfo.collider.gameObject.GetComponent<Interactable>();
             if (InteractableObject != null)
             {
-                if(!GameManager.Instance.DialougeStatus()) UIManager.Instance.SetButtonPrompt(InteractableObject._promptMessage);
-                else UIManager.Instance.ClearButtonPrompt();
-
+                if (!GameManager.Instance.DialougeStatus())
+                {
+                    if (!_isInCutscene)
+                    { UIManager.Instance.SetButtonPrompt(InteractableObject._promptMessage); }
+                    else UIManager.Instance.ClearButtonPrompt();
+                }
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     InteractableObject.BaseInteract();
@@ -33,6 +44,26 @@ public class PlayerInteract : MonoBehaviour
             }
         }
     }
+
+
+    private void OnDisable()
+    {
+        EventManager.OnStartCutscene -= EnterCutscene;
+        EventManager.OnEndCutscene -= ExitCutscene;
+    }
+    #endregion
+
+    #region Private Methods
+    private void EnterCutscene()
+    {
+        _isInCutscene = true;
+    }
+
+    private void ExitCutscene()
+    {
+        _isInCutscene = false;
+    }
+
 
     #endregion
 }

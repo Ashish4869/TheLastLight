@@ -9,7 +9,6 @@ public abstract class Interactable : MonoBehaviour
         Interact();
     }
 
-
     protected virtual void Interact() { }
     
 }

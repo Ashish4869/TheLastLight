@@ -34,7 +34,16 @@ public class CutSceneManager : MonoBehaviour
     {
         _videoPlayer.enabled = false;
         _cutSceneCamera.enabled = false;
-        GameManager.Instance.CutSceneFinished();
+
+        if(_currentCutsceneIndex == _cutscenes.Length)
+        {
+            GameManager.Instance.LoadlevelAfterCutscene();
+        }
+        else
+        {
+            GameManager.Instance.CutSceneFinished();
+        }
+       
     }
     #endregion
 
