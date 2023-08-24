@@ -73,22 +73,12 @@ public class UIManager : MonoBehaviour
         _speaker = _DialougueBox.transform.Find("DialougeBox/Speaker").GetComponent<TextMeshProUGUI>();
         _dialouge = _DialougueBox.transform.Find("DialougeBox/Dialouge").GetComponent<TextMeshProUGUI>();
 
-        //if we are in level 2
-        
-        if(GameManager.Instance.GetCurrentLevel() == 2)
-        {
-            if (GameManager.Instance.IsPlayerInCar()) SetUpUIForCar();
-        }
-       
-
         EventManager.OnPlayerDeath += DisableUI;
         EventManager.OnEndCutscene += EnableUIAfterCutscene;
         EventManager.OnStartCutscene += DisableUIBeforeCutscene;
     }
 
-    
-
-
+  
 
     // Update is called once per frame
     void Update()
@@ -157,9 +147,11 @@ public class UIManager : MonoBehaviour
     }
     private void EnableUIAfterCutscene()
     {
-        _isInCutscene = true;
+        _isInCutscene = true;   
         _CrossHair.SetActive(true);
         _LoadOutParent.SetActive(true);
+
+        if (GameManager.Instance.GetCurrentLevel() == 2) SetUpUIForCar();
     }
 
     private void DisableUIBeforeCutscene()
@@ -167,6 +159,7 @@ public class UIManager : MonoBehaviour
         _isInCutscene = false;
         _CrossHair.SetActive(false);
         _LoadOutParent.SetActive(false);
+        _carGearUI.SetActive(false);
     }
 
     #endregion

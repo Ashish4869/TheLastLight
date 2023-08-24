@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     bool _isInDialouge = false;
     bool _isInCar = false;
 
-    int _currentLevel = 3;
+    int _currentLevel = 2;
 
 
     [SerializeField] GameObject _cutSceneCam;
@@ -58,6 +58,11 @@ public class GameManager : MonoBehaviour
         _instance = this;
 
         DontDestroyOnLoad(gameObject);
+
+        if (_currentLevel == 2)
+        {
+            _isInCar = true;
+        }
     }
     #endregion
 
@@ -65,7 +70,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        PlayCutscene();
+        PlayCutscene(); //play this in start, as other scripts need time to register for the event before the event is played.
     }
     #endregion
 

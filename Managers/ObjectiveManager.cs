@@ -91,7 +91,7 @@ public class ObjectiveManager : MonoBehaviour
                 break;
 
             case 1:
-                _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[8], 0);
+                _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[8], 0);      
                 _ObjectivePage.SideObjectiveDataUpdate(_objectiveData.Data[10], 0);
                 break;
 

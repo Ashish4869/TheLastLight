@@ -16,8 +16,6 @@ public class CarTotalledCheck : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.gameObject.name);
         if(collision.gameObject.CompareTag("Ground")) _carMovement.CarTotalled();
-
     }
 }

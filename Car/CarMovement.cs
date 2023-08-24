@@ -15,7 +15,7 @@ public class CarMovement : MonoBehaviour
 {
     #region Variables
     float _normalSpeed = 10, _turnForce = 100f, _speed = 0f, _highGearSpeed = 15f;
-    bool _IsInHighGear = false, _carTotalled = false;
+    bool _IsInHighGear = false, _carTotalled = false, _canDrive = true;
     string _audioName, _prevAudioName = "Null";
 
     [Header("Wheels")]
@@ -45,6 +45,9 @@ public class CarMovement : MonoBehaviour
     {
         _boxCollider = (BoxCollider)GetComponent("BoxCollider");
         _eventManager = FindAnyObjectByType<EventManager>();
+
+        EventManager.OnStartCutscene += DisableCarbeforeCutscene;
+        EventManager.OnEndCutscene += EnableCarAfterCutscene;
     }
     private void Start()
     {
@@ -75,9 +78,17 @@ public class CarMovement : MonoBehaviour
         _eventManager.OnPlayerEnterExitCarEvent();
     }
 
+    private void OnDestroy()
+    {
+        EventManager.OnStartCutscene -= DisableCarbeforeCutscene;
+        EventManager.OnEndCutscene -= EnableCarAfterCutscene;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (!_canDrive) return;
+
         Movement();
         CheckForInput();
         PlayEngineSound();
@@ -96,8 +107,6 @@ public class CarMovement : MonoBehaviour
     #endregion
 
     #region Private Methods
-
-
     private void CheckForInput()
     {
         if (Input.GetKeyDown(KeyCode.E) || _carTotalled) //Get out of the car
@@ -215,6 +224,17 @@ public class CarMovement : MonoBehaviour
         _frontRightWheel.localRotation *= rotationAmount;
         _rearLeftWheel.localRotation *= rotationAmount;
         _rearRightWheel.localRotation *= rotationAmount;
+    }
+
+
+    void DisableCarbeforeCutscene()
+    {
+        _canDrive = false;
+    }
+
+    void EnableCarAfterCutscene()
+    {
+        _canDrive = true;
     }
     #endregion
 
