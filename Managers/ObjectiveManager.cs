@@ -174,7 +174,7 @@ public class ObjectiveManager : MonoBehaviour
 
     private void OnCompletePlaceToStay()
     {
-        Debug.Log("Play cutscene and move to level 3");
+        GameManager.Instance.PlayCutscene();
     }
 
     private void OnCompleteObtainedFoodAndWater()
