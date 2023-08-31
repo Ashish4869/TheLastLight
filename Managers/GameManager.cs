@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     bool _isInDialouge = false;
     bool _isInCar = false;
 
-    int _currentLevel = 2;
+    int _currentLevel = 1;
 
 
     [SerializeField] GameObject _cutSceneCam;
