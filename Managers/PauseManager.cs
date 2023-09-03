@@ -29,7 +29,7 @@ public class PauseManager : MonoBehaviour
 
     private void Update()
     {
-        if (_isInCutscene) return;
+        if (_isInCutscene || GameManager.Instance.DialougeStatus()) return;
 
         if(Input.GetKeyDown(KeyCode.Escape))
         {

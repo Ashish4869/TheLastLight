@@ -16,6 +16,8 @@ public class LockCursor : MonoBehaviour
     }
     private void Update()
     {
+        if (GameManager.Instance.DialougeStatus()) return;
+
         if (Input.GetKeyDown(KeyCode.Escape)) UpdateCursorLock();
     }
     #endregion

@@ -51,6 +51,7 @@ public class EnemyAI : MonoBehaviour
     private float _SearchingTime = 5f;
     private bool _playerDead;
     private bool _canAttackAgain = true;
+    private bool _isInCutscene = false;
 
     
     #endregion
@@ -63,6 +64,8 @@ public class EnemyAI : MonoBehaviour
         _ZombieAnimator = GetComponent<Animator>();
         _enemySoundManager = GetComponent<EnemySoundManager>();
         EventManager.OnPlayerEnterExitCar += ChangeTarget;
+        EventManager.OnStartCutscene += DisableEnemy;
+        EventManager.OnEndCutscene += EnableEnemy;
 
         if(_isBoss)
         {
@@ -81,6 +84,7 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_isInCutscene) return;
         if (_isBoss) return;
 
         //try to detect the player only if he is undetected by this enemy
@@ -124,6 +128,9 @@ public class EnemyAI : MonoBehaviour
     private void OnDestroy()
     {
         EventManager.OnPlayerEnterExitCar -= ChangeTarget;
+        EventManager.OnStartCutscene -= DisableEnemy;
+        EventManager.OnEndCutscene -= EnableEnemy;
+
     }
 
     //Drawing Gizmos for better visualizations and debugging
@@ -262,6 +269,18 @@ public class EnemyAI : MonoBehaviour
     {
         _Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
+
+    void DisableEnemy()
+    {
+        _isInCutscene = true;
+    }
+
+    void EnableEnemy()
+    {
+        _isInCutscene = false;
+    }
+
+   
     #endregion
 
     #region Public Functions

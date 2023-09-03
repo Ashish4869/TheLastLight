@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
     TextMeshProUGUI _speaker, _dialouge;
     Slider _PistolSlider, _AKSlider, _ShotGunSLider;
 
-    bool _isCritical = true, _showObjective = false,  _isInCutscene = false;
+    bool _isCritical = true, _showObjective = false,  _isInCutscene = true;
     bool _IsdialougeAnimating = false;
     public float _damageTimer = 2f; 
     #endregion
@@ -82,7 +82,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       if (_isInCutscene) return;
+       if (_isInCutscene || GameManager.Instance.DialougeStatus()) return;
 
        if(Input.GetKeyDown(KeyCode.Tab))
        {
@@ -134,6 +134,7 @@ public class UIManager : MonoBehaviour
     {
         EventManager.OnPlayerDeath -= DisableUI;
         EventManager.OnEndCutscene -= EnableUIAfterCutscene;
+        EventManager.OnStartCutscene -= DisableUIBeforeCutscene;
     }
 
     private void DisableUI()
@@ -146,16 +147,21 @@ public class UIManager : MonoBehaviour
     }
     private void EnableUIAfterCutscene()
     {
-        _isInCutscene = true;   
+        _isInCutscene = false;   
         _CrossHair.SetActive(true);
         _LoadOutParent.SetActive(true);
+        _interactivePromptMessage.SetActive(true);
+        _damageOverlay.color = new Color(1, 1, 1, 0);
 
         if (GameManager.Instance.GetCurrentLevel() == 2) SetUpUIForCar();
     }
 
     private void DisableUIBeforeCutscene()
     {
-        _isInCutscene = false;
+        _isInCutscene = true;
+        _damageOverlay.color = new Color(1, 1, 1, 0);
+        _criticalHealth.SetTrigger("NotCritical");
+        _interactivePromptMessage.SetActive(false);
         _CrossHair.SetActive(false);
         _LoadOutParent.SetActive(false);
         _carGearUI.SetActive(false);
