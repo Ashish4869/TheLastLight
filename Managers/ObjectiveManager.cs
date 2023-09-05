@@ -290,6 +290,7 @@ public class ObjectiveManager : MonoBehaviour
         {
             UIManager.Instance.TriggerNotification(notification);
             CompleteObjective(objectiveToComplete);
+            FindAnyObjectByType<EventManager>().OnCheckPointReachedEvent();
         }
 
         return CanRunObjective;

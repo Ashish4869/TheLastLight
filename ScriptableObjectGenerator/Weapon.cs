@@ -149,9 +149,13 @@ public class Weapon : ScriptableObject
     }
 
 
+    //Getters
     public float GetCurrentAmmoBarValue() => (float)(CurrentTotalAmmo + ClipAmmo) / (ammo + ClipSize);
     public int GetTotalCurrentAmmo() => CurrentTotalAmmo;
     public int GetClipAmmo() => ClipAmmo;
     public float GetCurrentSpray() => CurrentSpray;
     public float GetCurrentFireRate() => CurrentFireRate;
+
+    //setters
+    public void SetTotalAmmo(int remainingAmmo) => CurrentTotalAmmo = remainingAmmo;
 }

@@ -23,6 +23,9 @@ public class EventManager : MonoBehaviour
     public delegate void EndCutscene();
     public static event EndCutscene OnEndCutscene;
 
+    public delegate void CheckPointReached();
+    public static event CheckPointReached OnCheckPointReached; 
+
     //Fired when the player dies
     public void OnPlayerDeathEvent()
     {
@@ -68,5 +71,12 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    
+    //Fired when we reach a checkpoint
+    public void OnCheckPointReachedEvent()
+    {
+        if(OnCheckPointReached != null)
+        {
+            OnCheckPointReached();
+        }
+    }
 }

@@ -174,6 +174,7 @@ public class GameManager : MonoBehaviour
     {
         _levelLoader.SetActive(true);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        _currentLevel = SceneManager.GetActiveScene().buildIndex + 1;
     }
 
     //Game Data
