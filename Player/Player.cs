@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     Rigidbody _playerRig;
     Vector3 _Direction;
     float _speed = 250f;
-    float _normalSpeed = 250f;
+    float _normalSpeed = 2000f; //later change to 250
     float _runSpeed = 500f;
     float _slowWalkSpeed = 100f;
     float _NormalFOV;

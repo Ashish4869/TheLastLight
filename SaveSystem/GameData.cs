@@ -8,9 +8,9 @@ using UnityEngine;
 [System.Serializable]
 public class GameData
 {
-    public bool _hasAK, _hasShotGun;
+    public bool _hasAK, _hasShotGun, _isInCar;
     public int _currentLevel, _pistolBullets, _AKBullets, _shotGunBullets;
-    public GameData(SaveData saveData)
+    public GameData(SaveData saveData)  
     {
         _hasAK = saveData.GetAKBool();
         _hasShotGun = saveData.GetShotGunBool();
@@ -18,5 +18,6 @@ public class GameData
         _pistolBullets = saveData.GetPistolBullets();
         _shotGunBullets = saveData.GetShotGunBullets();
         _AKBullets = saveData.GetAKBullets();
+        _isInCar = saveData.GetIsInCarBool();
     }
 }

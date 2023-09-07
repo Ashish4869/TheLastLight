@@ -29,21 +29,17 @@ public class Gun : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
         foreach (Weapon gun in _loadout)
         {
             gun.Initialise();
         }
-        SetUpGunData();
+
+        SetUpGunDataFromDisk();
 
         PlayerEyes = GameObject.Find("PlayerHead/PlayerEyes").GetComponent<Transform>();
         EquipGun(1);
         SetUpEvents();
     }
-
-    
-
-
 
     // Update is called once per frame
     void Update()
@@ -137,36 +133,26 @@ public class Gun : MonoBehaviour
         EventManager.OnCheckPointReached += SaveGunData;
     }
 
-    private void SetUpGunData()
+    private void SetUpGunDataFromDisk()
     {
-        GameData data = SaveSystem.LoadGameData();
-        if (data == null)
-        {
-            Debug.Log("There was no data to load");
-            return;
-        }
-
-        SetValuesOfGunFromGameDataToSaveData(data);
+        if (!GameManager.Instance.HasValueFromDisk()) return;
 
         _loadout[1].SetTotalAmmo(SaveData.Instance.GetPistolBullets());
-        if(_HasAK47) _loadout[2].SetTotalAmmo(SaveData.Instance.GetAKBullets());
+        _HasAK47 = SaveData.Instance.GetAKBool();
+        _HasShotGun = SaveData.Instance.GetShotGunBool();
+        if (_HasAK47) _loadout[2].SetTotalAmmo(SaveData.Instance.GetAKBullets());
         if(_HasShotGun) _loadout[3].SetTotalAmmo(SaveData.Instance.GetShotGunBullets());
-        Debug.Log("Data loaded from Files");
     }
 
-    private void SetValuesOfGunFromGameDataToSaveData(GameData data)
-    {
-        SaveData.Instance.SetPistolBullets(data._pistolBullets);
-        Debug.Log(data._pistolBullets);
-        if (_HasAK47) SaveData.Instance.SetAKBullets(data._AKBullets);
-        if (_HasShotGun) SaveData.Instance.SetShotGunBullets(data._shotGunBullets);
-    }
+   
 
     void SaveGunData()
     {
+        SaveData.Instance.SetAKBool(_HasAK47);
+        SaveData.Instance.SetAKBool(_HasShotGun);
         SaveData.Instance.SetPistolBullets(_loadout[1].GetTotalCurrentAmmo());
-        if (_HasAK47) SaveData.Instance.SetPistolBullets(_loadout[2].GetTotalCurrentAmmo());
-        if(_HasShotGun) SaveData.Instance.SetPistolBullets(_loadout[3].GetTotalCurrentAmmo());
+        if (_HasAK47) SaveData.Instance.SetAKBullets(_loadout[2].GetTotalCurrentAmmo());
+        if(_HasShotGun) SaveData.Instance.SetShotGunBullets(_loadout[3].GetTotalCurrentAmmo());
     }
 
     void DisableGunBeforeCutscene() => _isInCutscene = true;

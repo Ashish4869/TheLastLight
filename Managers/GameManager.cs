@@ -21,8 +21,10 @@ public class GameManager : MonoBehaviour
     bool _isInDialouge = false;
     bool _isInCar = false;
 
-    int _currentLevel = 1;
+    bool _hasValueFromDisk = false;
 
+    int _currentLevel = 1;
+    GameData data;
 
     [SerializeField] GameObject _cutSceneCam;
 
@@ -57,12 +59,14 @@ public class GameManager : MonoBehaviour
 
         _instance = this;
 
-        DontDestroyOnLoad(gameObject);
+        SetUpValuesFromDisk();
 
         if (_currentLevel == 2)
         {
             _isInCar = true;
         }
+
+        EventManager.OnCheckPointReached += SaveDataIntoDisk;
     }
     #endregion
 
@@ -173,16 +177,64 @@ public class GameManager : MonoBehaviour
     public void LoadlevelAfterCutscene()
     {
         _levelLoader.SetActive(true);
+        _currentLevel = SceneManager.GetActiveScene().buildIndex + 2;
+        Debug.Log("Current Level value being saved is : " + _currentLevel);
+        SaveDataIntoDisk();
+        SaveSystem.SaveGameData(SaveData.Instance);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        _currentLevel = SceneManager.GetActiveScene().buildIndex + 1;
     }
 
     //Game Data
     public int GetCurrentLevel() => _currentLevel;
-
-    
+    public GameData GetDataFromDisk() => data;
+    public bool HasValueFromDisk() => _hasValueFromDisk;
     #endregion
 
     #region Private Functions
+    private void SaveDataIntoDisk()
+    {
+        SaveData.Instance.SetIsInCarBool(_isInCar);
+        SaveData.Instance.SetCurrentLevel(_currentLevel);
+    }
+
+    private void SetUpValuesFromDisk()
+    {
+        data = SaveSystem.LoadGameData();
+        
+        if (data == null)
+        {
+            Debug.Log("There was no data to load");
+            _hasValueFromDisk = false;
+            return;
+        }
+        _hasValueFromDisk = true;
+
+        SetUpValuesIntoSaveData();
+
+        _currentLevel = SaveData.Instance.GetCurrentLevel();
+        _isInCar = SaveData.Instance.GetIsInCarBool();
+    }
+
+    private void SetUpValuesIntoSaveData()
+    {
+        //Gun Data
+        SaveData.Instance.SetPistolBullets(data._pistolBullets);
+        SaveData.Instance.SetAKBool(data._hasAK);
+        SaveData.Instance.SetShotGunBool(data._hasShotGun);
+        SaveData.Instance.SetAKBool(data._hasAK);
+        if (data._hasAK) SaveData.Instance.SetAKBullets(data._AKBullets);
+        if (data._hasShotGun) SaveData.Instance.SetShotGunBullets(data._shotGunBullets);
+
+        //Game Manager Data
+        SaveData.Instance.SetCurrentLevel(data._currentLevel);
+        SaveData.Instance.SetIsInCarBool(data._isInCar);
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.OnCheckPointReached -= SaveDataIntoDisk;
+    }
+
+    
     #endregion
 }
