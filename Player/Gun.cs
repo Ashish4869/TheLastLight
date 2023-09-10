@@ -149,7 +149,7 @@ public class Gun : MonoBehaviour
     void SaveGunData()
     {
         SaveData.Instance.SetAKBool(_HasAK47);
-        SaveData.Instance.SetAKBool(_HasShotGun);
+        SaveData.Instance.SetShotGunBool(_HasShotGun);
         SaveData.Instance.SetPistolBullets(_loadout[1].GetTotalCurrentAmmo());
         if (_HasAK47) SaveData.Instance.SetAKBullets(_loadout[2].GetTotalCurrentAmmo());
         if(_HasShotGun) SaveData.Instance.SetShotGunBullets(_loadout[3].GetTotalCurrentAmmo());

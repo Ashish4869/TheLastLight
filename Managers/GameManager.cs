@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     int _currentLevel = 1;
     GameData data;
-
+    [Header("Cutscene related")]
     [SerializeField] GameObject _cutSceneCam;
 
 
@@ -74,6 +74,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        
         PlayCutscene(); //play this in start, as other scripts need time to register for the event before the event is played.
     }
     #endregion
@@ -141,7 +142,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayCutscene()
     {
-        FindAnyObjectByType<EventManager>().OnStartCutsceneEvent();
+        FindObjectOfType<EventManager>().OnStartCutsceneEvent();
         FindAnyObjectByType<CutSceneManager>().PlayCutscene();
         _cutSceneCam.SetActive(true);
         _levelLoader.SetActive(false);
@@ -170,7 +171,7 @@ public class GameManager : MonoBehaviour
     //Cutscene related
     public void CutSceneFinished()
     {
-        FindAnyObjectByType<EventManager>().OnEndCutsceneEvent();
+        FindObjectOfType<EventManager>().OnEndCutsceneEvent();
         _levelLoader.SetActive(true);
     }
 
@@ -188,6 +189,8 @@ public class GameManager : MonoBehaviour
     public int GetCurrentLevel() => _currentLevel;
     public GameData GetDataFromDisk() => data;
     public bool HasValueFromDisk() => _hasValueFromDisk;
+
+    public void SaveGame() => FindObjectOfType<EventManager>().OnCheckPointReachedEvent();
     #endregion
 
     #region Private Functions
@@ -228,6 +231,16 @@ public class GameManager : MonoBehaviour
         //Game Manager Data
         SaveData.Instance.SetCurrentLevel(data._currentLevel);
         SaveData.Instance.SetIsInCarBool(data._isInCar);
+
+        //Enemy Data
+        SaveData.Instance.SetZombieStatus(data._zombieStatus);
+
+        //Crate Data
+        SaveData.Instance.SetCrateStatus(data._crateStatus);
+
+        //Player
+        Vector3 position = new Vector3(data._playerPosX, data._playerPosY, data._playerPosZ);
+        SaveData.Instance.SetPlayerPosition(position);
     }
 
     private void OnDestroy()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -15,12 +16,12 @@ public class Player : MonoBehaviour
     Rigidbody _playerRig;
     Vector3 _Direction;
     float _speed = 250f;
-    float _normalSpeed = 2000f; //later change to 250
+    float _normalSpeed = 1000f; //later change to 250
     float _runSpeed = 500f;
     float _slowWalkSpeed = 100f;
     float _NormalFOV;
     float _sprintFOVModifier = 1.5f;
-    float _jumpForce = 1000f;
+    float _jumpForce = 2000f; //later changet this to 1000  
     float _sprintTimer = 5f;
     Camera _playerEyes;
     Camera _WeaponCam;
@@ -68,14 +69,32 @@ public class Player : MonoBehaviour
         EventManager.OnPlayerDeath += Die;
         EventManager.OnStartCutscene += DisablePlayerBeforeCutscene;
         EventManager.OnEndCutscene += EnablePlayerAfterCutscene;
+        EventManager.OnCheckPointReached += SavePlayerPosition;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            if (other.gameObject != null)
+            {
+                other.gameObject.GetComponentInParent<EnemyAI>().SensedPlayer();
+            }
+        }
+    }
+
+
 
     // Start is called before the first frame update
     void Start()
     {
         _NormalFOV = _playerEyes.fieldOfView;
         _originalWeaponPosition = _weaponParent.localPosition;
+
+        if (GameManager.Instance.HasValueFromDisk()) SetUpValuesForPlayerFromSave();
     }
+
+    
 
     // Update is called once per frame
     private void Update()
@@ -315,6 +334,13 @@ public class Player : MonoBehaviour
         _playerRig.velocity = TargetVelocity;
     }
 
+    private void OnDisable()
+    {
+        EventManager.OnPlayerDeath -= Die;
+        EventManager.OnStartCutscene -= DisablePlayerBeforeCutscene;
+        EventManager.OnEndCutscene -= EnablePlayerAfterCutscene;
+    }
+
     #endregion
 
     #region Private Methods
@@ -331,16 +357,7 @@ public class Player : MonoBehaviour
         _TargetWeaponBobPostion = _originalWeaponPosition + new Vector3(Mathf.Cos(angle) * xItensity * ADSHeadBobSens, Mathf.Sin(angle * 2) * yIntensity * ADSHeadBobSens, 0);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.CompareTag("Enemy"))
-        {
-            if(other.gameObject != null)
-            {
-                other.gameObject.GetComponentInParent<EnemyAI>().SensedPlayer();
-            }
-        }
-    }
+   
 
     private void Landed()
     {
@@ -378,12 +395,17 @@ public class Player : MonoBehaviour
         _isInCutscene = false;
     }
 
-    private void OnDisable()
+    private void SavePlayerPosition()
     {
-        EventManager.OnPlayerDeath -= Die;
-        EventManager.OnStartCutscene -= DisablePlayerBeforeCutscene;
-        EventManager.OnEndCutscene -= EnablePlayerAfterCutscene;
+        SaveData.Instance.SetPlayerPosition(transform.position);
     }
+
+    private void SetUpValuesForPlayerFromSave()
+    {
+        transform.position = SaveData.Instance.GetPlayerPosition();
+    }
+
+
     #endregion
 
     #region Public Method

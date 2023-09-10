@@ -10,17 +10,18 @@ public class HealthManager : MonoBehaviour
     #region Variables
     [SerializeField]
     private bool _isEnemy;
-    bool _isDead = false;
+    bool _isZombieDead = false;
 
     [SerializeField]
     private bool _isBoss;
 
     EventManager _eventManager;
-    private bool _imDead = false;
+    private bool _isPlayerDead = false; 
 
     [SerializeField] float _health = 100f;
 
     RagdollDeath _ragDollDeath;
+    EnemyManager _enemyManager;
 
     #endregion
 
@@ -29,10 +30,10 @@ public class HealthManager : MonoBehaviour
     {
         _ragDollDeath = GetComponent<RagdollDeath>();
         _eventManager = FindObjectOfType<EventManager>();
+        _enemyManager = GetComponentInParent<EnemyManager>();
     }
 
-    // Update is called once per frame
-
+    
     #endregion
 
     #region Private Methods
@@ -62,8 +63,11 @@ public class HealthManager : MonoBehaviour
             yield return null;
         }
 
-        Destroy(transform.parent.gameObject);
+        transform.parent.gameObject.SetActive(false);
+        _enemyManager.UpdateZombieStatus();
     }
+
+    
 
     
     #endregion
@@ -72,7 +76,7 @@ public class HealthManager : MonoBehaviour
     #region Public Methods
     public void TakeDamage(float damage , Vector3 Falldirection, Rigidbody BodyPart)
     {
-        if (_isDead) return;
+        if (_isZombieDead) return;
         _health -= damage;
 
         if(_isBoss)
@@ -85,11 +89,12 @@ public class HealthManager : MonoBehaviour
 
         if (_health <= 0)
         {
-            if(_isBoss)
+            _isZombieDead = true;
+
+            if (_isBoss)
             {
                 GetComponent<Animator>().SetTrigger("Death");
                 GetComponentInParent<BossHandler>().HandlePostBossDeath();
-                _isDead = true;
                 return;
             }
             else
@@ -97,16 +102,18 @@ public class HealthManager : MonoBehaviour
                 Death(Falldirection, BodyPart);
             }
             
+           
+
         }
     }
 
     public void TakeDamage(float damage)
     {
-        if (_imDead) return;
+        if (_isPlayerDead) return;
 
         if (_health < 0)
         {
-            _imDead = true;
+            _isPlayerDead = true;
             _eventManager.OnPlayerDeathEvent(); //calls event for player death
             AudioManager.Instance.StopPlayingAudio("HeartPounding");
             AudioManager.Instance.StopPlayingAudio("HeavyBreathing");
@@ -119,9 +126,9 @@ public class HealthManager : MonoBehaviour
         AudioManager.Instance.PlaySFX("Damage" + Random.Range(1, 3).ToString());
         GameManager.Instance.ShowDamageOverlay();
         GameManager.Instance.SetPlayerHealth(_health);
-
-       
     }
+
+    public bool IsDead() => _isZombieDead;
     #endregion
     
 

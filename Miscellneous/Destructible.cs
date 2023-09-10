@@ -10,9 +10,9 @@ public class Destructible : MonoBehaviour {
 		// Spawn a shattered object
 	    Instantiate(destroyedVersion, transform.position, transform.rotation);
 		// Remove the current object
-		Destroy(gameObject);
+		gameObject.SetActive(false);
 		GameManager.Instance.SpawnRandomCrateItem(transform);
-		
+		GetComponentInParent<CrateManager>().UpdateCrateStatus();	
 	}
 
 }

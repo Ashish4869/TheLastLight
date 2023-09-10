@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -50,6 +51,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject _LoadOutParent;
     [SerializeField] GameObject _interactivePromptMessage;
     [SerializeField] GameObject _carGearUI;
+    [SerializeField] Animator _saveAnimation;
 
     [SerializeField] GameObject _notificationPrefab;
     TextMeshProUGUI _speaker, _dialouge;
@@ -72,12 +74,18 @@ public class UIManager : MonoBehaviour
         _speaker = _DialougueBox.transform.Find("DialougeBox/Speaker").GetComponent<TextMeshProUGUI>();
         _dialouge = _DialougueBox.transform.Find("DialougeBox/Dialouge").GetComponent<TextMeshProUGUI>();
 
-        EventManager.OnPlayerDeath += DisableUI;
-        EventManager.OnEndCutscene += EnableUIAfterCutscene;
-        EventManager.OnStartCutscene += DisableUIBeforeCutscene;
+        SetUpEvents();
+       
     }
 
-  
+    private void Start()
+    {
+        SetUpValuesFromDisk();
+    }
+
+   
+
+
 
     // Update is called once per frame
     void Update()
@@ -129,12 +137,29 @@ public class UIManager : MonoBehaviour
 
 
     #region Private Methods
+    private void SetUpValuesFromDisk()
+    {
+        if(SaveData.Instance.GetAKBool()) AKUI.SetActive(true);
+        if (SaveData.Instance.GetShotGunBool()) ShotGunUI.SetActive(true);
+
+        UpdateAmmoBar(Weapon.AmmoType.AK47, SaveData.Instance.GetAKBullets());
+        UpdateAmmoBar(Weapon.AmmoType.Shotgun, SaveData.Instance.GetShotGunBullets());
+    }
+
+    private void SetUpEvents()
+    {
+        EventManager.OnPlayerDeath += DisableUI;
+        EventManager.OnEndCutscene += EnableUIAfterCutscene;
+        EventManager.OnStartCutscene += DisableUIBeforeCutscene;
+        EventManager.OnCheckPointReached += ShowSaveAnimation;
+    }
 
     private void OnDisable()
     {
         EventManager.OnPlayerDeath -= DisableUI;
         EventManager.OnEndCutscene -= EnableUIAfterCutscene;
         EventManager.OnStartCutscene -= DisableUIBeforeCutscene;
+        EventManager.OnCheckPointReached -= ShowSaveAnimation;
     }
 
     private void DisableUI()
@@ -384,6 +409,13 @@ public class UIManager : MonoBehaviour
         _interactivePromptMessage.SetActive(true);
         _CrossHair.SetActive(true);
         _carGearUI.SetActive(false);
+    }
+
+
+    //Saving Animation
+    public void ShowSaveAnimation()
+    {
+        _saveAnimation.SetTrigger("ShowSaveAnimation");
     }
     #endregion
 }

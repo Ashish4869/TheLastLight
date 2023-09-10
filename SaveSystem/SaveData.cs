@@ -46,6 +46,8 @@ public class SaveData : MonoBehaviour
     //Data to save when the player tries to save the game.
     bool _hasAK, _hasShotGun,_isInCar;
     int _currentLevel,_pistolBullets, _AKBullets, _shotGunBullets;
+    bool[] _zombieStatus, _crateStatus;
+    float _playerPosX, _playerPosY, _playerPosZ;
 
     //setters
     public void SetAKBool(bool condition) => _hasAK = condition;
@@ -55,6 +57,16 @@ public class SaveData : MonoBehaviour
     public void SetAKBullets(int AKBullets) => _AKBullets = AKBullets;
     public void SetShotGunBullets(int ShotGunBullets) => _shotGunBullets = ShotGunBullets;
     public void SetIsInCarBool(bool condition) => _isInCar = condition;
+    public void SetZombieStatus(bool[] zombieStatus) => _zombieStatus = zombieStatus;
+    public void SetCrateStatus(bool[] crateStatus) => _crateStatus = crateStatus;
+
+    public void SetPlayerPosition(Vector3 position)
+    {
+        _playerPosX = position.x;
+        _playerPosY = position.y;
+        _playerPosZ = position.z;
+    }
+   
 
 
     //getters
@@ -66,6 +78,15 @@ public class SaveData : MonoBehaviour
     public int GetShotGunBullets() => _shotGunBullets;
     public int GetAKBullets() => _AKBullets;
     public bool GetIsInCarBool() => _isInCar;
+    public bool[] GetZombieStatus() => _zombieStatus;
+
+    public bool[] GetCrateStatus() => _crateStatus;
+
+    public Vector3 GetPlayerPosition()
+    {
+        Vector3 postion = new Vector3(_playerPosX, _playerPosY, _playerPosZ);
+        return postion;
+    }
 
 
     // private methods
@@ -77,9 +98,7 @@ public class SaveData : MonoBehaviour
     IEnumerator SaveValues()
     {
         yield return new WaitForSeconds(1f);
-        Debug.Log("Data saved in disk");
         SaveSystem.SaveGameData(this);
-
     }
 
 }
