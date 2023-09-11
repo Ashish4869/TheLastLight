@@ -9,8 +9,8 @@ using UnityEngine;
 public class GameData
 {
     public bool _hasAK, _hasShotGun, _isInCar;
-    public int _currentLevel, _pistolBullets, _AKBullets, _shotGunBullets;
-    public bool[] _zombieStatus, _crateStatus;
+    public int _currentLevel, _pistolBullets, _AKBullets, _shotGunBullets, _cutsceneIndex;
+    public bool[] _zombieStatus, _crateStatus, _objectiveStatus;
     public float _playerPosX, _playerPosY, _playerPosZ;
     public GameData(SaveData saveData)  
     {
@@ -21,8 +21,10 @@ public class GameData
         _shotGunBullets = saveData.GetShotGunBullets();
         _AKBullets = saveData.GetAKBullets();
         _isInCar = saveData.GetIsInCarBool();
+        _cutsceneIndex = saveData.GetCutsceneIndex();
         _zombieStatus = saveData.GetZombieStatus();
         _crateStatus = saveData.GetCrateStatus();
+        _objectiveStatus = saveData.GetObjectiveStatus();
         _playerPosX = saveData.GetPlayerPosition().x;
         _playerPosY = saveData.GetPlayerPosition().y;
         _playerPosZ = saveData.GetPlayerPosition().z;

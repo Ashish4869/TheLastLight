@@ -41,6 +41,8 @@ public class CrateManager : MonoBehaviour
     public void SetUpCrateStatus()
     {
         _crateStatus = SaveData.Instance.GetCrateStatus();
+
+        if (_crateStatus == null) return;
             
         for (int i = 0; i < _crateStatus.Length; i++)
         {

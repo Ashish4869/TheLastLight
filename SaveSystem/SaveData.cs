@@ -45,8 +45,8 @@ public class SaveData : MonoBehaviour
 
     //Data to save when the player tries to save the game.
     bool _hasAK, _hasShotGun,_isInCar;
-    int _currentLevel,_pistolBullets, _AKBullets, _shotGunBullets;
-    bool[] _zombieStatus, _crateStatus;
+    int _currentLevel,_pistolBullets, _AKBullets, _shotGunBullets, _cutsceneIndex;
+    bool[] _zombieStatus, _crateStatus, _objectiveStatus;
     float _playerPosX, _playerPosY, _playerPosZ;
 
     //setters
@@ -57,8 +57,10 @@ public class SaveData : MonoBehaviour
     public void SetAKBullets(int AKBullets) => _AKBullets = AKBullets;
     public void SetShotGunBullets(int ShotGunBullets) => _shotGunBullets = ShotGunBullets;
     public void SetIsInCarBool(bool condition) => _isInCar = condition;
+    public void SetCutsceneIndex(int index) => _cutsceneIndex = index;
     public void SetZombieStatus(bool[] zombieStatus) => _zombieStatus = zombieStatus;
     public void SetCrateStatus(bool[] crateStatus) => _crateStatus = crateStatus;
+    public void SetObjectiveStatus(bool[] objectiveStatus) => _objectiveStatus = objectiveStatus;
 
     public void SetPlayerPosition(Vector3 position)
     {
@@ -78,9 +80,13 @@ public class SaveData : MonoBehaviour
     public int GetShotGunBullets() => _shotGunBullets;
     public int GetAKBullets() => _AKBullets;
     public bool GetIsInCarBool() => _isInCar;
+
+    public int GetCutsceneIndex() => _cutsceneIndex;
     public bool[] GetZombieStatus() => _zombieStatus;
 
     public bool[] GetCrateStatus() => _crateStatus;
+
+    public bool[] GetObjectiveStatus() => _objectiveStatus; 
 
     public Vector3 GetPlayerPosition()
     {

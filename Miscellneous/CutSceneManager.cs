@@ -32,6 +32,8 @@ public class CutSceneManager : MonoBehaviour
   
     void CutSceneEnded(VideoPlayer vp)
     {
+       
+
         _videoPlayer.enabled = false;
         _cutSceneCamera.enabled = false;
 
@@ -50,16 +52,30 @@ public class CutSceneManager : MonoBehaviour
     #region Public Methods
     public void PlayCutscene()  
     {
+        if(CheckIfCutsceneAlreadyPlayed())
+        {
+            CutSceneEnded(_videoPlayer);
+            return;
+        }
+
         _videoPlayer.enabled = true;
         _cutSceneCamera.enabled = true; 
         _videoPlayer.clip = _cutscenes[_currentCutsceneIndex++];
+        SaveData.Instance.SetCutsceneIndex(_currentCutsceneIndex);
     }
 
-    public void StartCutscene()
+    private bool CheckIfCutsceneAlreadyPlayed()
     {
-        SetupCutscene();
-        PlayCutscene();
+        if (GameManager.Instance.HasValueFromDisk())
+        {
+            _currentCutsceneIndex = SaveData.Instance.GetCutsceneIndex();
+            return true;
+        }
+
+        return false;
     }
+
+   
 
     #endregion
 

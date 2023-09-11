@@ -1,5 +1,6 @@
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using System.Collections.Generic;
 using System;
 
 public class ObjectiveManager : MonoBehaviour
@@ -69,6 +70,9 @@ public class ObjectiveManager : MonoBehaviour
     //Level 2
     bool _hasFoodAndWater = false;
 
+    //for storing in disk
+    bool[] _objectiveStatus;
+
     ObjectivePage _ObjectivePage;
     ObjectiveData _objectiveData = new ObjectiveData();
     #endregion
@@ -77,8 +81,10 @@ public class ObjectiveManager : MonoBehaviour
     private void Awake()
     {
         _ObjectivePage = FindAnyObjectByType<ObjectivePage>();
+        EventManager.OnCheckPointReached += SaveObjectiveStatus;
     }
 
+    
     private void Start()
     {
         int level = SceneManager.GetActiveScene().buildIndex;
@@ -86,11 +92,13 @@ public class ObjectiveManager : MonoBehaviour
         switch (level)
         {
             case 0:
+                _objectiveStatus = new bool[7];
                 _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[0], 0);
                 _ObjectivePage.SideObjectiveDataUpdate(_objectiveData.Data[4], 0);
                 break;
 
             case 1:
+                _objectiveStatus = new bool[3];
                 _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[8], 0);      
                 _ObjectivePage.SideObjectiveDataUpdate(_objectiveData.Data[10], 0);
                 break;
@@ -100,6 +108,16 @@ public class ObjectiveManager : MonoBehaviour
                 _ObjectivePage.SideObjectiveDataUpdate("", 0);
                 break;
         }
+
+
+        if(GameManager.Instance.HasValueFromDisk()) SetUpValuesFromDisk();
+    }
+
+    
+
+    private void OnDestroy()
+    {
+        EventManager.OnCheckPointReached -= SaveObjectiveStatus;
     }
     #endregion
 
@@ -127,17 +145,21 @@ public class ObjectiveManager : MonoBehaviour
             //Level 1
             case ObjectiveCompletion.ReceiveTaskFromOldMan:
                 OnCompleteAssignedOldManTask();
+                _objectiveStatus[0] = true;
                 break;
 
             case ObjectiveCompletion.ObtainMedsForOldMan:
+                _objectiveStatus[1] = true;
                 OnCompleteObtainedOldManMeds();
                 break;
 
             case ObjectiveCompletion.ObtainOldManCarKeys:
+                _objectiveStatus[2] = true;
                 OnCompleteObtainedCarKeys();
                 break;
 
             case ObjectiveCompletion.LeaveWellington:
+                _objectiveStatus[3] = true;
                 OnCompleteLeaveWellington();
                 break;
 
@@ -154,14 +176,17 @@ public class ObjectiveManager : MonoBehaviour
             //Side
             //Level 1
             case ObjectiveCompletion.ReceiveTaskFromSuperMarketOwner:
+                _objectiveStatus[4] = true;
                 OnCompleteAssignSuperMarketOwnerTask();
                 break;
 
             case ObjectiveCompletion.ObtainSuppliesFromSuperMarket:
+                _objectiveStatus[5] = true;
                 OnCompleteObtainSuppliesFromSuperMarket();
                 break;
 
             case ObjectiveCompletion.ObtainManagerRoomKeys:
+                _objectiveStatus[6] = true;
                 OnCompleteObtainedManagerRoomKeys();
                     break;
 
@@ -239,6 +264,46 @@ public class ObjectiveManager : MonoBehaviour
     {
         _objectiveData.Data[PageNo] = "<s>" + _objectiveData.Data[PageNo] + "</s>";
     }
+
+    private void SaveObjectiveStatus()
+    {
+        SaveData.Instance.SetObjectiveStatus(_objectiveStatus);
+    }
+
+    private void SetUpValuesFromDisk()
+    {
+        bool[] objectiveStatus = SaveData.Instance.GetObjectiveStatus();
+
+        int level = SceneManager.GetActiveScene().buildIndex;
+        
+        switch(level)
+        {
+            case 0:
+                for(int i = 0; i < 7; i++)
+                {
+                    if(objectiveStatus[i] == true)
+                    {
+                        ObjectiveCompletion objective = (ObjectiveCompletion)i;
+                        CompleteObjective(objective);
+                    }
+                }
+                break;
+
+                /*
+            case 1:
+                for (int i = 0; i < 3; i++)
+                {
+                    if (objectiveStatus[i] == true)
+                    {
+                        ObjectiveCompletion objective = Enum.GetName(typeof(ObjectiveCompletion), i);
+                        CompleteObjective(objective);
+                    }
+                }
+                */
+
+        }
+    }
+
     #endregion
 
     #region Public Methods

@@ -232,11 +232,17 @@ public class GameManager : MonoBehaviour
         SaveData.Instance.SetCurrentLevel(data._currentLevel);
         SaveData.Instance.SetIsInCarBool(data._isInCar);
 
+        //CutsceneData
+        SaveData.Instance.SetCutsceneIndex(data._cutsceneIndex);
+
         //Enemy Data
         SaveData.Instance.SetZombieStatus(data._zombieStatus);
 
         //Crate Data
         SaveData.Instance.SetCrateStatus(data._crateStatus);
+
+        //Objective Data
+        SaveData.Instance.SetObjectiveStatus(data._objectiveStatus);
 
         //Player
         Vector3 position = new Vector3(data._playerPosX, data._playerPosY, data._playerPosZ);

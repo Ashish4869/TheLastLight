@@ -42,6 +42,8 @@ public class EnemyManager : MonoBehaviour
     {
         _zombieStatus = SaveData.Instance.GetZombieStatus();
 
+        if (_zombieStatus == null) return;
+
         for(int i = 0; i < _zombieStatus.Length; i++)
         {
             if(_zombieStatus[i] == false)
