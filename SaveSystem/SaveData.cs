@@ -46,7 +46,7 @@ public class SaveData : MonoBehaviour
     //Data to save when the player tries to save the game.
     bool _hasAK, _hasShotGun,_isInCar;
     int _currentLevel,_pistolBullets, _AKBullets, _shotGunBullets, _cutsceneIndex;
-    bool[] _zombieStatus, _crateStatus, _objectiveStatus;
+    bool[] _zombieStatus, _crateStatus, _objectiveStatus, _disposableStatus;
     float _playerPosX, _playerPosY, _playerPosZ;
 
     //setters
@@ -61,6 +61,8 @@ public class SaveData : MonoBehaviour
     public void SetZombieStatus(bool[] zombieStatus) => _zombieStatus = zombieStatus;
     public void SetCrateStatus(bool[] crateStatus) => _crateStatus = crateStatus;
     public void SetObjectiveStatus(bool[] objectiveStatus) => _objectiveStatus = objectiveStatus;
+
+    public void SetDisposableStatus(bool[] disposableStatus) => _disposableStatus = disposableStatus;
 
     public void SetPlayerPosition(Vector3 position)
     {
@@ -86,12 +88,25 @@ public class SaveData : MonoBehaviour
 
     public bool[] GetCrateStatus() => _crateStatus;
 
-    public bool[] GetObjectiveStatus() => _objectiveStatus; 
+    public bool[] GetObjectiveStatus() => _objectiveStatus;
+
+    public bool[] GetDisposableStatus() => _disposableStatus;
 
     public Vector3 GetPlayerPosition()
     {
         Vector3 postion = new Vector3(_playerPosX, _playerPosY, _playerPosZ);
         return postion;
+    }
+
+    //Clearing data that should not persist between levels
+    public void ClearNonLevelPersistantData()
+    {
+        _zombieStatus = null;
+        _crateStatus = null;
+        _objectiveStatus = null;
+        _playerPosX = 0;
+        _playerPosY = 0;
+        _playerPosZ = 0;
     }
 
 

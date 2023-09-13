@@ -241,6 +241,9 @@ public class GameManager : MonoBehaviour
         //Crate Data
         SaveData.Instance.SetCrateStatus(data._crateStatus);
 
+        //DisposableItem
+        SaveData.Instance.SetDisposableStatus(data._disposableStatus);
+
         //Objective Data
         SaveData.Instance.SetObjectiveStatus(data._objectiveStatus);
 

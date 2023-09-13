@@ -8,6 +8,7 @@ public class PickUpObjects : Interactable
     public Notification _notif;
 
     public bool _isObjectiveItem;
+    public bool _isDisposableItem;
     #endregion
 
     #region Private Methods
@@ -41,6 +42,12 @@ public class PickUpObjects : Interactable
         if(_isObjectiveItem)
         {
             GetComponent<ObjectiveInteractables>().RunObjective();
+        }
+
+        if(_isDisposableItem)
+        {
+            FindAnyObjectByType<DispoableItemManager>().UpdateDisposableStatus();
+            gameObject.SetActive(false);
         }
 
         Destroy(gameObject);

@@ -274,6 +274,8 @@ public class ObjectiveManager : MonoBehaviour
     {
         bool[] objectiveStatus = SaveData.Instance.GetObjectiveStatus();
 
+        if (objectiveStatus == null) return;
+
         int level = SceneManager.GetActiveScene().buildIndex;
         
         switch(level)

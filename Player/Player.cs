@@ -402,7 +402,12 @@ public class Player : MonoBehaviour
 
     private void SetUpValuesForPlayerFromSave()
     {
-        transform.position = SaveData.Instance.GetPlayerPosition();
+        Vector3 pos = SaveData.Instance.GetPlayerPosition();
+        if (pos != Vector3.zero)
+        {
+            transform.position = SaveData.Instance.GetPlayerPosition();
+        }
+        
     }
 
 

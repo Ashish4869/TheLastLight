@@ -10,7 +10,7 @@ public class GameData
 {
     public bool _hasAK, _hasShotGun, _isInCar;
     public int _currentLevel, _pistolBullets, _AKBullets, _shotGunBullets, _cutsceneIndex;
-    public bool[] _zombieStatus, _crateStatus, _objectiveStatus;
+    public bool[] _zombieStatus, _crateStatus, _objectiveStatus, _disposableStatus;
     public float _playerPosX, _playerPosY, _playerPosZ;
     public GameData(SaveData saveData)  
     {
@@ -25,6 +25,7 @@ public class GameData
         _zombieStatus = saveData.GetZombieStatus();
         _crateStatus = saveData.GetCrateStatus();
         _objectiveStatus = saveData.GetObjectiveStatus();
+        _disposableStatus = saveData.GetObjectiveStatus();
         _playerPosX = saveData.GetPlayerPosition().x;
         _playerPosY = saveData.GetPlayerPosition().y;
         _playerPosZ = saveData.GetPlayerPosition().z;
