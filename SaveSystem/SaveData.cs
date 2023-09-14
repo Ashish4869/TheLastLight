@@ -104,6 +104,7 @@ public class SaveData : MonoBehaviour
         _zombieStatus = null;
         _crateStatus = null;
         _objectiveStatus = null;
+        _disposableStatus = null;
         _playerPosX = 0;
         _playerPosY = 0;
         _playerPosZ = 0;

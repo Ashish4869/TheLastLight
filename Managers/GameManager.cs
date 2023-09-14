@@ -180,6 +180,7 @@ public class GameManager : MonoBehaviour
         _levelLoader.SetActive(true);
         _currentLevel = SceneManager.GetActiveScene().buildIndex + 2;
         Debug.Log("Current Level value being saved is : " + _currentLevel);
+        SaveData.Instance.ClearNonLevelPersistantData();
         SaveDataIntoDisk();
         SaveSystem.SaveGameData(SaveData.Instance);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);

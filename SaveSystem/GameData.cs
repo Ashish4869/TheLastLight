@@ -25,7 +25,7 @@ public class GameData
         _zombieStatus = saveData.GetZombieStatus();
         _crateStatus = saveData.GetCrateStatus();
         _objectiveStatus = saveData.GetObjectiveStatus();
-        _disposableStatus = saveData.GetObjectiveStatus();
+        _disposableStatus = saveData.GetDisposableStatus();
         _playerPosX = saveData.GetPlayerPosition().x;
         _playerPosY = saveData.GetPlayerPosition().y;
         _playerPosZ = saveData.GetPlayerPosition().z;

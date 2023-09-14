@@ -5,22 +5,50 @@ using UnityEngine;
 /// <summary>
 /// Keeps Track of the crates in the level
 /// </summary>
-public class CrateManager : ObjectStatusParent
+public class CrateManager : MonoBehaviour
 {
     bool[] _crateStatus;
     private void Start()
     {
-        _crateStatus = base.StartUp(transform, _crateStatus, SetUpCrateStatus);
+        int crateCount = transform.childCount;
+        _crateStatus = new bool[crateCount];
+
+        for (int i = 0; i < crateCount; i++)
+        {
+            _crateStatus[i] = true;
+        }
+
+
+        if (GameManager.Instance.HasValueFromDisk()) SetUpCrateStatus();
     }
 
     public void UpdateCrateStatus()
     {
-        base.UpdateStatus(transform, SaveData.Instance.SetCrateStatus, _crateStatus);
+        int crateCount = transform.childCount;
+
+        for (int i = 0; i < crateCount; i++)
+        {
+            if (!transform.GetChild(i).gameObject.activeSelf)
+            {
+                _crateStatus[i] = false;
+            }
+        }
+
+        SaveData.Instance.SetCrateStatus(_crateStatus);
     }
 
-    public bool[] SetUpCrateStatus()
+    public void SetUpCrateStatus()
     {
-        _crateStatus = base.SetUpStatus(transform, SaveData.Instance.GetCrateStatus);
-        return _crateStatus;
+        _crateStatus = SaveData.Instance.GetCrateStatus();
+
+        if (_crateStatus == null) return;
+
+        for (int i = 0; i < _crateStatus.Length; i++)
+        {
+            if (_crateStatus[i] == false)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
     }
 }

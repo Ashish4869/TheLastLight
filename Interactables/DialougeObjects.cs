@@ -4,9 +4,9 @@ public class DialougeObjects : Interactable
 {
     [SerializeField] Dialouge[] _dialouges;
     int _currentDialouge = 0;
-    [SerializeField] bool _disposable = false;
     [SerializeField] bool _isObjectiveInteractable = false;
     bool _thisDialouge = false; //to prevent scripts of the same type triggering the dialouge
+    [SerializeField] bool _disposable = false;
 
     protected override void Interact()
     {
@@ -39,8 +39,13 @@ public class DialougeObjects : Interactable
                     GameManager.Instance.DisableDialougeSystem();
                     _thisDialouge = false;
 
-                    if (_disposable) Destroy(gameObject);
+                   
                     if (_isObjectiveInteractable) GetComponent<ObjectiveInteractables>().RunObjective();
+                    if (_disposable)
+                    {
+                        gameObject.SetActive(false);
+                        FindAnyObjectByType<DispoableItemManager>().UpdateDisposableStatus();
+                    }
                 }
             }
         }

@@ -16,8 +16,7 @@ public class ObjectiveInteractables : Interactable
     {
         if(ObjectiveManager.Instance.CheckConditionForObjectiveCompletion(_objectiveToComplete, _CompletionNotif, _objectivePrequisite))
         {
-            FindAnyObjectByType<DispoableItemManager>().UpdateDisposableStatus();
-            gameObject.SetActive(false) ;
+            gameObject.SetActive(false);
         }
         else
         {

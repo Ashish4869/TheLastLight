@@ -5,23 +5,52 @@ using UnityEngine;
 /// <summary>
 /// Keeps a track of the zombies in the game
 /// </summary>
-public class EnemyManager : ObjectStatusParent
+public class EnemyManager : MonoBehaviour
 {
     bool[] _zombieStatus;
     private void Start()
     {
-        _zombieStatus = base.StartUp(transform,_zombieStatus,SetUpZombiesStatus);
+        int zombieCount = transform.childCount;
+        _zombieStatus = new bool[zombieCount];
+
+        for (int i = 0; i < zombieCount; i++)
+        {
+            _zombieStatus[i] = true;
+        }
+
+
+        if (GameManager.Instance.HasValueFromDisk()) SetUpZombiesStatus();
     }
 
     public void UpdateZombieStatus()
     {
-        base.UpdateStatus(transform, SaveData.Instance.SetZombieStatus, _zombieStatus);
+        int zombieCount = transform.childCount;
+
+        for (int i = 0; i < zombieCount; i++)
+        {
+            if (!transform.GetChild(i).gameObject.activeSelf)
+            {
+                _zombieStatus[i] = false;
+                Debug.Log("Zombie No:" + i + "Is dead and saved in to saveData");
+            }
+        }
+
+        SaveData.Instance.SetZombieStatus(_zombieStatus);   
     }
 
-    public bool[] SetUpZombiesStatus()
+    public void SetUpZombiesStatus()
     {
-        _zombieStatus = base.SetUpStatus(transform, SaveData.Instance.GetZombieStatus);
-        return _zombieStatus;
+        _zombieStatus = SaveData.Instance.GetZombieStatus();
+
+        if (_zombieStatus == null) return;
+
+        for (int i = 0; i < _zombieStatus.Length; i++)
+        {
+            if (_zombieStatus[i] == false)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
     }
 
 

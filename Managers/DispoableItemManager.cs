@@ -2,22 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DispoableItemManager : ObjectStatusParent
+public class DispoableItemManager : MonoBehaviour
 {
     bool[] _disposableStatus;
     private void Start()
     {
-        _disposableStatus = base.StartUp(transform, _disposableStatus, SetUpDisposableStatus);
+        int disposableCount = transform.childCount;
+        _disposableStatus = new bool[disposableCount];
+
+        for (int i = 0; i < disposableCount; i++)
+        {
+            _disposableStatus[i] = true;
+        }
+
+
+        if (GameManager.Instance.HasValueFromDisk()) SetUpDisposableStatus();
     }
 
     public void UpdateDisposableStatus()
     {
-        base.UpdateStatus(transform, SaveData.Instance.SetZombieStatus, _disposableStatus);
+        int disposableCount = transform.childCount;
+
+        for (int i = 0; i < disposableCount; i++)
+        {
+            if (!transform.GetChild(i).gameObject.activeSelf)
+            {
+                _disposableStatus[i] = false;
+            }
+        }
+
+        SaveData.Instance.SetDisposableStatus(_disposableStatus);
     }
 
-    public bool[] SetUpDisposableStatus()
+    public void SetUpDisposableStatus()
     {
-        _disposableStatus = base.SetUpStatus(transform, SaveData.Instance.GetZombieStatus);
-        return _disposableStatus;
+        _disposableStatus = SaveData.Instance.GetDisposableStatus();
+
+        if (_disposableStatus == null) return;
+
+        for (int i = 0; i < _disposableStatus.Length; i++)
+        {
+            if (_disposableStatus[i] == false)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
     }
 }
