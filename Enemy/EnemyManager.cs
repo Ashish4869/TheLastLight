@@ -10,6 +10,12 @@ public class EnemyManager : MonoBehaviour
     bool[] _zombieStatus;
     private void Start()
     {
+        InitializeZombieArray();
+        if (GameManager.Instance.HasValueFromDisk()) SetUpZombiesStatus();
+    }
+
+    private void InitializeZombieArray()
+    {
         int zombieCount = transform.childCount;
         _zombieStatus = new bool[zombieCount];
 
@@ -17,9 +23,6 @@ public class EnemyManager : MonoBehaviour
         {
             _zombieStatus[i] = true;
         }
-
-
-        if (GameManager.Instance.HasValueFromDisk()) SetUpZombiesStatus();
     }
 
     public void UpdateZombieStatus()
@@ -31,7 +34,6 @@ public class EnemyManager : MonoBehaviour
             if (!transform.GetChild(i).gameObject.activeSelf)
             {
                 _zombieStatus[i] = false;
-                Debug.Log("Zombie No:" + i + "Is dead and saved in to saveData");
             }
         }
 
@@ -40,9 +42,9 @@ public class EnemyManager : MonoBehaviour
 
     public void SetUpZombiesStatus()
     {
-        _zombieStatus = SaveData.Instance.GetZombieStatus();
+        if (SaveData.Instance.GetZombieStatus() == null) return;
 
-        if (_zombieStatus == null) return;
+        _zombieStatus = SaveData.Instance.GetZombieStatus();
 
         for (int i = 0; i < _zombieStatus.Length; i++)
         {

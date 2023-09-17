@@ -13,13 +13,18 @@ public class CutSceneManager : MonoBehaviour
     [SerializeField] VideoClip[] _cutscenes;
     int _currentCutsceneIndex = 0;
     [SerializeField] Camera _cutSceneCamera;
-    bool _canPlayCutscene = true;
     #endregion
 
     #region Monobehaviour Callbacks
     private void Awake()
     {
         SetupCutscene();
+        SetupValueFromDisk();
+    }
+
+    private void SetupValueFromDisk()
+    {
+        if (GameManager.Instance.HasValueFromDisk()) _currentCutsceneIndex = SaveData.Instance.GetCutsceneIndex();
     }
     #endregion
 
@@ -43,6 +48,7 @@ public class CutSceneManager : MonoBehaviour
         else
         {
             GameManager.Instance.CutSceneFinished();
+
         }
        
     }
@@ -51,6 +57,12 @@ public class CutSceneManager : MonoBehaviour
     #region Public Methods
     public void PlayCutscene()  
     {
+        if (!GameManager.Instance.CanPlayCutscene())
+        {
+            Debug.Log("We cannot play the cutscene");
+            return;
+        }
+
         _videoPlayer.enabled = true;
         _cutSceneCamera.enabled = true; 
         _videoPlayer.clip = _cutscenes[_currentCutsceneIndex++];

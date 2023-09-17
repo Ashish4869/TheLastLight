@@ -1,4 +1,4 @@
-using UnityEngine;
+    using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -20,7 +20,6 @@ public class SaveSystem
 
         formatter.Serialize(stream, data);
         stream.Close();
-        Debug.Log("Data Saved!");
     }
 
     //Loads Save data from the file
@@ -39,7 +38,6 @@ public class SaveSystem
         }
         else
         {
-            Debug.Log("Save File not found! " + path);
             return null;
         }
     }

@@ -7,6 +7,12 @@ public class DispoableItemManager : MonoBehaviour
     bool[] _disposableStatus;
     private void Start()
     {
+        if (GameManager.Instance.HasValueFromDisk()) SetUpDisposableStatus();
+        InitializeDisposableArray();
+    }
+
+    private void InitializeDisposableArray()
+    {
         int disposableCount = transform.childCount;
         _disposableStatus = new bool[disposableCount];
 
@@ -14,9 +20,6 @@ public class DispoableItemManager : MonoBehaviour
         {
             _disposableStatus[i] = true;
         }
-
-
-        if (GameManager.Instance.HasValueFromDisk()) SetUpDisposableStatus();
     }
 
     public void UpdateDisposableStatus()
@@ -36,9 +39,8 @@ public class DispoableItemManager : MonoBehaviour
 
     public void SetUpDisposableStatus()
     {
+        if (SaveData.Instance.GetDisposableStatus() == null) return;
         _disposableStatus = SaveData.Instance.GetDisposableStatus();
-
-        if (_disposableStatus == null) return;
 
         for (int i = 0; i < _disposableStatus.Length; i++)
         {

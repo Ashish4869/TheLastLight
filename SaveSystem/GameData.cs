@@ -8,7 +8,7 @@ using UnityEngine;
 [System.Serializable]
 public class GameData
 {
-    public bool _hasAK, _hasShotGun, _isInCar;
+    public bool _hasAK, _hasShotGun, _isInCar, _canPlaycutscene, _isBossLevel;
     public int _currentLevel, _pistolBullets, _AKBullets, _shotGunBullets, _cutsceneIndex;
     public bool[] _zombieStatus, _crateStatus, _objectiveStatus, _disposableStatus;
     public float _playerPosX, _playerPosY, _playerPosZ;
@@ -16,6 +16,8 @@ public class GameData
     {
         _hasAK = saveData.GetAKBool();
         _hasShotGun = saveData.GetShotGunBool();
+        _canPlaycutscene = saveData.GetCanPlayCutscene();
+        _isBossLevel = saveData.GetIsBossLevel();
         _currentLevel = saveData.GetCurrentLevel();
         _pistolBullets = saveData.GetPistolBullets();
         _shotGunBullets = saveData.GetShotGunBullets();

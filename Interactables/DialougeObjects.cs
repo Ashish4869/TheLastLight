@@ -39,9 +39,9 @@ public class DialougeObjects : Interactable
                     GameManager.Instance.DisableDialougeSystem();
                     _thisDialouge = false;
 
-                   
-                    if (_isObjectiveInteractable) GetComponent<ObjectiveInteractables>().RunObjective();
-                    if (_disposable)
+                    bool canDispose = true;
+                    if (_isObjectiveInteractable) canDispose = GetComponent<ObjectiveInteractables>().RunObjective();
+                    if (_disposable && canDispose)
                     {
                         gameObject.SetActive(false);
                         FindAnyObjectByType<DispoableItemManager>().UpdateDisposableStatus();

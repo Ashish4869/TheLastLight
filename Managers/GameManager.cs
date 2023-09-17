@@ -19,7 +19,8 @@ public class GameManager : MonoBehaviour
 
     bool _isGamePaused = false;
     bool _isInDialouge = false;
-    bool _isInCar = false;
+    bool _isInCar = true;
+    bool _shouldPlayCutscene = true;
 
     bool _hasValueFromDisk = false;
 
@@ -74,7 +75,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        
+        if (_shouldPlayCutscene == false)
+        {
+            UIManager.Instance.SetIsInCutscene(false);
+            return;
+        }
         PlayCutscene(); //play this in start, as other scripts need time to register for the event before the event is played.
     }
     #endregion
@@ -140,13 +145,7 @@ public class GameManager : MonoBehaviour
     public void SetDialoguePauseStatus(bool condition) => _isInDialouge = condition;
     public bool DialougeStatus() => _isInDialouge;
 
-    public void PlayCutscene()
-    {
-        FindObjectOfType<EventManager>().OnStartCutsceneEvent();
-        FindAnyObjectByType<CutSceneManager>().PlayCutscene();
-        _cutSceneCam.SetActive(true);
-        _levelLoader.SetActive(false);
-    }
+   
 
     //Car Mechanics
     public void HidePlayer()
@@ -169,17 +168,33 @@ public class GameManager : MonoBehaviour
     public bool IsPlayerInCar() => _isInCar;
 
     //Cutscene related
+    public void PlayCutscene()
+    {
+        _shouldPlayCutscene = true;
+        SaveData.Instance.SetCanPlayCutscene(_shouldPlayCutscene);
+        FindObjectOfType<EventManager>().OnStartCutsceneEvent();
+        FindAnyObjectByType<CutSceneManager>().PlayCutscene();
+        _cutSceneCam.SetActive(true);
+        _levelLoader.SetActive(false);
+    }
+
     public void CutSceneFinished()
     {
         FindObjectOfType<EventManager>().OnEndCutsceneEvent();
+        _shouldPlayCutscene = false;
+        SaveData.Instance.SetCanPlayCutscene(_shouldPlayCutscene);
         _levelLoader.SetActive(true);
     }
+
+    public bool CanPlayCutscene() => _shouldPlayCutscene;
+
+    public void SetShouldPlayCutscene(bool condition) => _shouldPlayCutscene = condition;
+   
 
     public void LoadlevelAfterCutscene()
     {
         _levelLoader.SetActive(true);
         _currentLevel = SceneManager.GetActiveScene().buildIndex + 2;
-        Debug.Log("Current Level value being saved is : " + _currentLevel);
         SaveData.Instance.ClearNonLevelPersistantData();
         SaveDataIntoDisk();
         SaveSystem.SaveGameData(SaveData.Instance);
@@ -217,6 +232,7 @@ public class GameManager : MonoBehaviour
 
         _currentLevel = SaveData.Instance.GetCurrentLevel();
         _isInCar = SaveData.Instance.GetIsInCarBool();
+        _shouldPlayCutscene = SaveData.Instance.GetCanPlayCutscene();
     }
 
     private void SetUpValuesIntoSaveData()
@@ -235,6 +251,7 @@ public class GameManager : MonoBehaviour
 
         //CutsceneData
         SaveData.Instance.SetCutsceneIndex(data._cutsceneIndex);
+        SaveData.Instance.SetCanPlayCutscene(data._canPlaycutscene);
 
         //Enemy Data
         SaveData.Instance.SetZombieStatus(data._zombieStatus);
@@ -251,6 +268,9 @@ public class GameManager : MonoBehaviour
         //Player
         Vector3 position = new Vector3(data._playerPosX, data._playerPosY, data._playerPosZ);
         SaveData.Instance.SetPlayerPosition(position);
+
+        //Enemy data
+        SaveData.Instance.SetIsBossLevel(data._isBossLevel);
     }
 
     private void OnDestroy()

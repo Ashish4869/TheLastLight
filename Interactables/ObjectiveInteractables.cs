@@ -12,15 +12,16 @@ public class ObjectiveInteractables : Interactable
         RunObjective();
     }
 
-    public  void RunObjective()
+    public  bool RunObjective()
     {
         if(ObjectiveManager.Instance.CheckConditionForObjectiveCompletion(_objectiveToComplete, _CompletionNotif, _objectivePrequisite))
         {
-            gameObject.SetActive(false);
+            return true;
         }
         else
         {
            if(_shouldShowInCompleteNotif) UIManager.Instance.TriggerNotification(_inCompleteNotif);
+            return false;
         }
     }
    

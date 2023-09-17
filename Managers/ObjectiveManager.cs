@@ -165,10 +165,12 @@ public class ObjectiveManager : MonoBehaviour
 
             //Level 2
             case ObjectiveCompletion.ObtainFoodAndWater:
+                _objectiveStatus[0] = true;
                 OnCompleteObtainedFoodAndWater();
                 break;
 
             case ObjectiveCompletion.ObtainPlaceToStay:
+                _objectiveStatus[1] = true;
                 OnCompletePlaceToStay();
                 break;
 
@@ -192,6 +194,7 @@ public class ObjectiveManager : MonoBehaviour
 
              //Level 2
             case ObjectiveCompletion.ObtainShotGun:
+                _objectiveStatus[2] = true;
                 OnCompleteObtainedShotGun();
                 break;
         }
@@ -291,17 +294,18 @@ public class ObjectiveManager : MonoBehaviour
                 }
                 break;
 
-                /*
+                
             case 1:
                 for (int i = 0; i < 3; i++)
                 {
                     if (objectiveStatus[i] == true)
                     {
-                        ObjectiveCompletion objective = Enum.GetName(typeof(ObjectiveCompletion), i);
+                        ObjectiveCompletion objective = (ObjectiveCompletion)(i+7);
                         CompleteObjective(objective);
                     }
                 }
-                */
+                break;
+                
 
         }
     }

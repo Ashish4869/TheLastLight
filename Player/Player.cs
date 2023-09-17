@@ -385,19 +385,14 @@ public class Player : MonoBehaviour
         enabled = false;
     }
 
-    void DisablePlayerBeforeCutscene()
-    {
-        _isInCutscene = true;
-    }
+    void DisablePlayerBeforeCutscene() => _isInCutscene = true;
 
-    void EnablePlayerAfterCutscene()
-    {
-        _isInCutscene = false;
-    }
+    void EnablePlayerAfterCutscene() => _isInCutscene = false;
 
     private void SavePlayerPosition()
     {
-        SaveData.Instance.SetPlayerPosition(transform.position);
+        Vector3 pos = FindAnyObjectByType<Player>().transform.position; //this is because the prefab loses its reference when we switch between levels
+        SaveData.Instance.SetPlayerPosition(pos);
     }
 
     private void SetUpValuesForPlayerFromSave()

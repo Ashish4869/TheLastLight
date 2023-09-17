@@ -44,7 +44,7 @@ public class SaveData : MonoBehaviour
    
 
     //Data to save when the player tries to save the game.
-    bool _hasAK, _hasShotGun,_isInCar;
+    bool _hasAK, _hasShotGun,_isInCar, _canPlayCutscene, _isBossLevel;
     int _currentLevel,_pistolBullets, _AKBullets, _shotGunBullets, _cutsceneIndex;
     bool[] _zombieStatus, _crateStatus, _objectiveStatus, _disposableStatus;
     float _playerPosX, _playerPosY, _playerPosZ;
@@ -52,6 +52,8 @@ public class SaveData : MonoBehaviour
     //setters
     public void SetAKBool(bool condition) => _hasAK = condition;
     public void SetShotGunBool(bool condition) => _hasShotGun = condition;
+    public void SetIsBossLevel(bool condition) => _isBossLevel = condition;
+    public void SetCanPlayCutscene(bool condition) => _canPlayCutscene = condition;  
     public void SetCurrentLevel(int level) => _currentLevel = level;
     public void SetPistolBullets(int PistolBullets) => _pistolBullets = PistolBullets;
     public void SetAKBullets(int AKBullets) => _AKBullets = AKBullets;
@@ -82,6 +84,9 @@ public class SaveData : MonoBehaviour
     public int GetShotGunBullets() => _shotGunBullets;
     public int GetAKBullets() => _AKBullets;
     public bool GetIsInCarBool() => _isInCar;
+    public bool GetIsBossLevel() => _isBossLevel;
+
+    public bool GetCanPlayCutscene() => _canPlayCutscene;
 
     public int GetCutsceneIndex() => _cutsceneIndex;
     public bool[] GetZombieStatus() => _zombieStatus;
@@ -105,6 +110,8 @@ public class SaveData : MonoBehaviour
         _crateStatus = null;
         _objectiveStatus = null;
         _disposableStatus = null;
+        _canPlayCutscene = true;
+        _cutsceneIndex = 0;
         _playerPosX = 0;
         _playerPosY = 0;
         _playerPosZ = 0;
@@ -115,6 +122,7 @@ public class SaveData : MonoBehaviour
     public  void SaveValuesInPC()
     {
         StartCoroutine(SaveValues());
+        Debug.Log("Can Play cutscene Value: " + _canPlayCutscene);
     }
 
     IEnumerator SaveValues()

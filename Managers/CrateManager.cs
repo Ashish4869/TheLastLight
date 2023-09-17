@@ -10,6 +10,12 @@ public class CrateManager : MonoBehaviour
     bool[] _crateStatus;
     private void Start()
     {
+        InitializeCrateArray();
+        if (GameManager.Instance.HasValueFromDisk()) SetUpCrateStatus();
+    }
+
+    private void InitializeCrateArray()
+    {
         int crateCount = transform.childCount;
         _crateStatus = new bool[crateCount];
 
@@ -17,9 +23,6 @@ public class CrateManager : MonoBehaviour
         {
             _crateStatus[i] = true;
         }
-
-
-        if (GameManager.Instance.HasValueFromDisk()) SetUpCrateStatus();
     }
 
     public void UpdateCrateStatus()
@@ -39,9 +42,9 @@ public class CrateManager : MonoBehaviour
 
     public void SetUpCrateStatus()
     {
-        _crateStatus = SaveData.Instance.GetCrateStatus();
+        if (SaveData.Instance.GetCrateStatus() == null) return;
 
-        if (_crateStatus == null) return;
+        _crateStatus = SaveData.Instance.GetCrateStatus();
 
         for (int i = 0; i < _crateStatus.Length; i++)
         {

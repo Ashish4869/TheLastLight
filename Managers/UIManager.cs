@@ -74,7 +74,7 @@ public class UIManager : MonoBehaviour
         _speaker = _DialougueBox.transform.Find("DialougeBox/Speaker").GetComponent<TextMeshProUGUI>();
         _dialouge = _DialougueBox.transform.Find("DialougeBox/Dialouge").GetComponent<TextMeshProUGUI>();
 
-        SetUpEvents();
+        RegisterEvents();
        
     }
 
@@ -146,7 +146,7 @@ public class UIManager : MonoBehaviour
         UpdateAmmoBar(Weapon.AmmoType.Shotgun, SaveData.Instance.GetShotGunBullets());
     }
 
-    private void SetUpEvents()
+    private void RegisterEvents()
     {
         EventManager.OnPlayerDeath += DisableUI;
         EventManager.OnEndCutscene += EnableUIAfterCutscene;
@@ -417,5 +417,8 @@ public class UIManager : MonoBehaviour
     {
         _saveAnimation.SetTrigger("ShowSaveAnimation");
     }
+
+    //cutscene
+    public void SetIsInCutscene(bool condition) => _isInCutscene = condition;
     #endregion
 }

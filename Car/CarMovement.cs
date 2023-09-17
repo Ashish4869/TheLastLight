@@ -49,8 +49,22 @@ public class CarMovement : MonoBehaviour
         EventManager.OnStartCutscene += DisableCarbeforeCutscene;
         EventManager.OnEndCutscene += EnableCarAfterCutscene;
     }
+
+    private void SetUpCarFromDisk()
+    {
+       if(GameManager.Instance.HasValueFromDisk())
+        {
+            if(SaveData.Instance.GetIsInCarBool() == false)
+            {
+                GetOutOfCar();
+                DisableCar();
+            }
+        }
+    }
+
     private void Start()
     {
+        SetUpCarFromDisk();
         _carGearUIManager = (CarGearUIManager)GetComponent("CarGearUIManager");
     }
 
