@@ -29,7 +29,7 @@ public class ZombieCounter : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            if (child.gameObject.activeSelf) return; //if any if the children are active return
+            if (child.gameObject.activeSelf) return; //if any of the children happens to be active in scene, return
         }
 
         StartCoroutine(SpawnBoss());

@@ -59,7 +59,6 @@ public class CutSceneManager : MonoBehaviour
     {
         if (!GameManager.Instance.CanPlayCutscene())
         {
-            Debug.Log("We cannot play the cutscene");
             return;
         }
 

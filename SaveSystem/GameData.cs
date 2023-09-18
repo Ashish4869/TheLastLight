@@ -8,6 +8,7 @@ using UnityEngine;
 [System.Serializable]
 public class GameData
 {
+    //data to be saved
     public bool _hasAK, _hasShotGun, _isInCar, _canPlaycutscene, _isBossLevel;
     public int _currentLevel, _pistolBullets, _AKBullets, _shotGunBullets, _cutsceneIndex;
     public bool[] _zombieStatus, _crateStatus, _objectiveStatus, _disposableStatus;

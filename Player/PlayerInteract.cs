@@ -8,7 +8,7 @@ public class PlayerInteract : MonoBehaviour
     float _distance = 2f;
     [SerializeField] LayerMask _interactable;
 
-    bool _isInCutscene = false;
+    bool _isInCutscene = false; 
     #endregion
 
     #region MonoBehaviour Callbacks

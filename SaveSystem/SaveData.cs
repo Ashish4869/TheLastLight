@@ -122,7 +122,6 @@ public class SaveData : MonoBehaviour
     public  void SaveValuesInPC()
     {
         StartCoroutine(SaveValues());
-        Debug.Log("Can Play cutscene Value: " + _canPlayCutscene);
     }
 
     IEnumerator SaveValues()
