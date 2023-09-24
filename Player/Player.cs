@@ -16,12 +16,12 @@ public class Player : MonoBehaviour
     Rigidbody _playerRig;
     Vector3 _Direction;
     float _speed = 250f;
-    float _normalSpeed = 1000f; //later change to 250
+    float _normalSpeed = 250f;
     float _runSpeed = 500f;
     float _slowWalkSpeed = 100f;
     float _NormalFOV;
     float _sprintFOVModifier = 1.5f;
-    float _jumpForce = 2000f; //later changet this to 1000  
+    float _jumpForce = 1000f;  
     float _sprintTimer = 5f;
     Camera _playerEyes;
     Camera _WeaponCam;

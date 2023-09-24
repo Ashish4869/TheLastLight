@@ -69,6 +69,11 @@ public class PauseManager : MonoBehaviour
         _colorGrading.contrast.value = 0;
     }
 
+    public void MainMenu()
+    {
+        FindAnyObjectByType<LevelLoader>().LoadParticularLevel(0);
+    }
+
     public void Quit() => Application.Quit();
 
     private void OnDisable()

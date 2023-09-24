@@ -42,4 +42,39 @@ public class SaveSystem
         }
     }
 
+
+    //Stores the Setting configuration of the game
+    public static void SaveSettingsData(SettingManager setting)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + "/settings.ini";
+
+        FileStream stream = new FileStream(path, FileMode.Create);
+
+        SettingData data = new SettingData(setting);
+
+        formatter.Serialize(stream, data);
+        stream.Close();
+    }
+
+    //Loads Setting data from the file
+    public static SettingData LoadSettingData()
+    {
+        string path = Application.persistentDataPath + "/settings.ini";
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            SettingData data = (SettingData)formatter.Deserialize(stream);
+            stream.Close();
+            return data;
+        }
+        else
+        {
+            Debug.Log("Setings not configured! " + path);
+            return null;
+        }
+    }
 }

@@ -59,6 +59,7 @@ public class AudioManager : MonoBehaviour
             s._source.pitch = s._pitch;
             s._source.clip = s._audioClip;
             s._source.loop = s._Shouldloop;
+            s._source.outputAudioMixerGroup = s._mixer;
            
         }
 

@@ -91,19 +91,19 @@ public class ObjectiveManager : MonoBehaviour
 
         switch (level)
         {
-            case 0:
+            case 1:
                 _objectiveStatus = new bool[7];
                 _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[0], 0);
                 _ObjectivePage.SideObjectiveDataUpdate(_objectiveData.Data[4], 0);
                 break;
 
-            case 1:
+            case 2:
                 _objectiveStatus = new bool[3];
                 _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[8], 0);      
                 _ObjectivePage.SideObjectiveDataUpdate(_objectiveData.Data[10], 0);
                 break;
 
-            case 2:
+            case 3:
                 _ObjectivePage.MainObjectiveDataUpdate(_objectiveData.Data[12], 0);
                 _ObjectivePage.SideObjectiveDataUpdate("", 0);
                 break;

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -28,6 +29,8 @@ public class GameManager : MonoBehaviour
     GameData data;
     [Header("Cutscene related")]
     [SerializeField] GameObject _cutSceneCam;
+
+    [SerializeField] AudioMixer _mixer;
 
 
     #endregion
@@ -61,6 +64,7 @@ public class GameManager : MonoBehaviour
         _instance = this;
 
         SetUpValuesFromDisk();
+       
 
         if (_currentLevel == 2)
         {
@@ -69,18 +73,24 @@ public class GameManager : MonoBehaviour
 
         EventManager.OnCheckPointReached += SaveDataIntoDisk;
     }
+
     #endregion
 
     #region MonoBehviour CallBacks
 
     private void Start()
     {
+        InitialiseSettings();
+        int _isIsMainMenu = SceneManager.GetActiveScene().buildIndex; //will return 0 if its the main menu
+        if (_isIsMainMenu == 0) {return; }
+        
+
         if (_shouldPlayCutscene == false)
         {
             UIManager.Instance.SetIsInCutscene(false);
             return;
         }
-        PlayCutscene(); //play this in start, as other scripts need time to register for the event before the event is played.
+        PlayCutscene(); //play this in start, as other scripts need time to register for the event before the event is triggered.
     }
     #endregion
 
@@ -233,6 +243,16 @@ public class GameManager : MonoBehaviour
         _currentLevel = SaveData.Instance.GetCurrentLevel();
         _isInCar = SaveData.Instance.GetIsInCarBool();
         _shouldPlayCutscene = SaveData.Instance.GetCanPlayCutscene();
+    }
+    private void InitialiseSettings()
+    {
+        SettingData data = SaveSystem.LoadSettingData();
+
+        if (data == null) return;
+
+        QualitySettings.SetQualityLevel(data._graphicsQuality);
+        FindAnyObjectByType<TogglePostProcessing>().TogglePostProcessingVolume(data._postProcessingBool);
+        _mixer.SetFloat("volume", data._gameVolume);
     }
 
     private void SetUpValuesIntoSaveData()
