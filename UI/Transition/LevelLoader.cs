@@ -13,7 +13,7 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadParticularLevel(int level)
     {
-        StartCoroutine(LoadLevel(level-1));
+        StartCoroutine(LoadLevel(level));
     }
 
     IEnumerator LoadLevel(int levelIndex)

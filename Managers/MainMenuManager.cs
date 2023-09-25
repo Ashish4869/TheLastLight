@@ -74,7 +74,6 @@ public class MainMenuManager : MonoBehaviour
     public void ContinueGame()
     {
         int currentLevel = SaveData.Instance.GetCurrentLevel();
-        Debug.Log("LevelTOLoad: " + currentLevel);
 
         //Load proper Level
         FindAnyObjectByType<LevelLoader>().LoadParticularLevel(currentLevel);

@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     bool _hasValueFromDisk = false;
 
-    int _currentLevel = 1;
+    int _currentLevel;
     GameData data;
     [Header("Cutscene related")]
     [SerializeField] GameObject _cutSceneCam;
@@ -204,7 +204,7 @@ public class GameManager : MonoBehaviour
     public void LoadlevelAfterCutscene()
     {
         _levelLoader.SetActive(true);
-        _currentLevel = SceneManager.GetActiveScene().buildIndex + 2;
+        _currentLevel = SceneManager.GetActiveScene().buildIndex + 1;
         SaveData.Instance.ClearNonLevelPersistantData();
         SaveDataIntoDisk();
         SaveSystem.SaveGameData(SaveData.Instance);

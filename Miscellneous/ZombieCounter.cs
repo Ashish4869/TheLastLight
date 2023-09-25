@@ -44,7 +44,7 @@ public class ZombieCounter : MonoBehaviour
 
     IEnumerator SpawnBoss()
     {
-        yield return new WaitForSeconds(2); //later change to 60
+        yield return new WaitForSeconds(60); 
         _enemyBoss.SetActive(true);
     }
 }
