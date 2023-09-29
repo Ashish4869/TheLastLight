@@ -71,6 +71,11 @@ public class PauseManager : MonoBehaviour
 
     public void MainMenu()
     {
+        Time.timeScale = 1;
+        _colorGrading.saturation.value = 0;
+        _colorGrading.contrast.value = 0;
+        _pauseUI.SetActive(false);
+        GameManager.Instance.SetGamePauseStatus(false);
         FindAnyObjectByType<LevelLoader>().LoadParticularLevel(0);
     }
 

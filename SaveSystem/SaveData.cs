@@ -130,4 +130,9 @@ public class SaveData : MonoBehaviour
         SaveSystem.SaveGameData(this);
     }
 
+    private void OnDestroy()
+    {
+        EventManager.OnCheckPointReached -= SaveValuesInPC;
+    }
+
 }

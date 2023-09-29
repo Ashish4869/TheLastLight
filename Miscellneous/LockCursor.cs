@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LockCursor : MonoBehaviour
 {
@@ -12,6 +11,12 @@ public class LockCursor : MonoBehaviour
 
     private void Start()
     {
+        if(SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            EnableCursor();
+            return;
+        }
+
         UpdateCursorLock();
     }
     private void Update()
@@ -38,6 +43,13 @@ public class LockCursor : MonoBehaviour
             Cursor.visible = true;
             _cursorLock = true;
         }
+    }
+
+    public void EnableCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        _cursorLock = true;
     }
 
     #endregion

@@ -21,6 +21,8 @@ public class PlayerInteract : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.DialougeStatus()) return;
+
         UIManager.Instance.ClearButtonPrompt();
 
         RaycastHit hitinfo;

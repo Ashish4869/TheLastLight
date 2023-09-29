@@ -17,7 +17,7 @@ public class TrailerManager : MonoBehaviour
     }
 
     private void Update()
-    {
+    {   
 
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {

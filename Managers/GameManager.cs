@@ -64,7 +64,8 @@ public class GameManager : MonoBehaviour
         _instance = this;
 
         SetUpValuesFromDisk();
-       
+
+        _currentLevel = SceneManager.GetActiveScene().buildIndex;
 
         if (_currentLevel == 2)
         {
