@@ -73,7 +73,7 @@ public class SaveSystem
         }
         else
         {
-            Debug.Log("Setings not configured! " + path);
+            Debug.Log("Setings not configured! " + path);   
             return null;
         }
     }

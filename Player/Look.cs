@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 /// <summary>
 /// Handles Look and rotation
 /// </summary>
@@ -20,6 +19,7 @@ public class Look : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         _originalCam = _playerEyes.rotation;
         _weapon = GameObject.Find("Weapon").GetComponent<Transform>();
 

@@ -97,6 +97,11 @@ public class MainMenuManager : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void LoadTestlevel(int level)
+    {
+        FindAnyObjectByType<LevelLoader>().LoadParticularLevel(level);
+    }
     #endregion
 
 

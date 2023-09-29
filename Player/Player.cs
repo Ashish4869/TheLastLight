@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 1.Handles movement
@@ -88,6 +89,13 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        if(SceneManager.GetActiveScene().buildIndex > 3)
+        {
+            _normalSpeed = 1000f;
+            _jumpForce = 2000f;
+        }
+
         _NormalFOV = _playerEyes.fieldOfView;
         _originalWeaponPosition = _weaponParent.localPosition;
 
