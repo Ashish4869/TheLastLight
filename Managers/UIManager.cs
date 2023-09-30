@@ -75,17 +75,12 @@ public class UIManager : MonoBehaviour
         _dialouge = _DialougueBox.transform.Find("DialougeBox/Dialouge").GetComponent<TextMeshProUGUI>();
 
         RegisterEvents();
-       
     }
 
     private void Start()
     {
         SetUpValuesFromDisk();
     }
-
-   
-
-
 
     // Update is called once per frame
     void Update()
@@ -100,7 +95,7 @@ public class UIManager : MonoBehaviour
 
     IEnumerator DeathUI()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
         _DeathUI.SetActive(true);
         FindObjectOfType<LockCursor>().UpdateCursorLock();
     }
@@ -195,11 +190,14 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region Public Methods
-
-
     public void ReloadGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        FindAnyObjectByType<LevelLoader>().LoadParticularLevel(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ReturnToMainMenu()
+    {
+        FindAnyObjectByType<LevelLoader>().LoadParticularLevel(0);
     }
 
     public void UpdateAmmo(int TotalAmmo, int ClipAmmo)
