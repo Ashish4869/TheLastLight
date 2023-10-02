@@ -27,7 +27,7 @@ public class PickUpObjects : Interactable
                     GameManager.Instance.PickedUpHealthPack();
                     AudioManager.Instance.PlaySFX("MedPickUp");
                     UIManager.Instance.TriggerNotification(_notif);
-                    Destroy(gameObject);
+                    gameObject.SetActive(false);
                     return;
                 }
 
@@ -46,11 +46,11 @@ public class PickUpObjects : Interactable
 
         if(_isDisposableItem)
         {
-            FindAnyObjectByType<DispoableItemManager>().UpdateDisposableStatus();
             gameObject.SetActive(false);
+            FindAnyObjectByType<DispoableItemManager>().UpdateDisposableStatus();
         }
 
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
 

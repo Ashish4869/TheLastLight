@@ -28,23 +28,23 @@ public class ObjectiveManager : MonoBehaviour
     {
         //Level 1
         //Main
-        ReceiveTaskFromOldMan,
-        ObtainMedsForOldMan,
-        ObtainOldManCarKeys,
-        LeaveWellington,
+        ReceiveTaskFromOldMan, //0
+        ObtainMedsForOldMan, //1
+        ObtainOldManCarKeys, //2
+        LeaveWellington, //3
 
         //Side
-        ReceiveTaskFromSuperMarketOwner,
-        ObtainSuppliesFromSuperMarket,
-        ObtainManagerRoomKeys,
+        ReceiveTaskFromSuperMarketOwner, //4
+        ObtainSuppliesFromSuperMarket, //5
+        ObtainManagerRoomKeys, //6
 
         //Level 2
         //Main
-        ObtainFoodAndWater,
-        ObtainPlaceToStay,
+        ObtainFoodAndWater, //7
+        ObtainPlaceToStay, //8
 
         //Side
-        ObtainShotGun
+        ObtainShotGun //9
     }
 
     public enum ObjectiveCompletionPrerequisite
@@ -283,7 +283,7 @@ public class ObjectiveManager : MonoBehaviour
         
         switch(level)
         {
-            case 0:
+            case 1:
                 for(int i = 0; i < 7; i++)
                 {
                     if(objectiveStatus[i] == true)
@@ -295,7 +295,7 @@ public class ObjectiveManager : MonoBehaviour
                 break;
 
                 
-            case 1:
+            case 2:
                 for (int i = 0; i < 3; i++)
                 {
                     if (objectiveStatus[i] == true)

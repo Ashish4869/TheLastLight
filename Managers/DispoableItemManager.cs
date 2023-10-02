@@ -7,8 +7,8 @@ public class DispoableItemManager : MonoBehaviour
     bool[] _disposableStatus;
     private void Start()
     {
-        if (GameManager.Instance.HasValueFromDisk()) SetUpDisposableStatus();
         InitializeDisposableArray();
+        if (GameManager.Instance.HasValueFromDisk()) SetUpDisposableStatus();
     }
 
     private void InitializeDisposableArray()

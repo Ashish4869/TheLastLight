@@ -53,13 +53,13 @@ public class CarMovement : MonoBehaviour
     private void SetUpCarFromDisk()
     {
        if(GameManager.Instance.HasValueFromDisk())
-        {
+       {
             if(SaveData.Instance.GetIsInCarBool() == false)
             {
                 GetOutOfCar();
                 DisableCar();
             }
-        }
+       }
     }
 
     private void Start()
@@ -165,6 +165,7 @@ public class CarMovement : MonoBehaviour
 
     private void GetOutOfCar()
     {
+        AudioManager.Instance.PlaySFX("carDoorOpenClose");
         GameManager.Instance.TransitionToPlayer();
         GameManager.Instance.PlacePlayerNearCar(transform.position);
         UIManager.Instance.EnableUIFromCar();

@@ -15,6 +15,7 @@ public class Car : Interactable
         base.Interact();
         TransitionToCar();
         HidePlayerAndUI();
+        AudioManager.Instance.PlaySFX("carDoorOpenClose");
         AudioManager.Instance.PlaySFX("StartCar");
     }
 
