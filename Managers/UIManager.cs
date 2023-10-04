@@ -128,6 +128,12 @@ public class UIManager : MonoBehaviour
         _IsdialougeAnimating = false;
         _continueBox.SetActive(true);
     }
+
+    IEnumerator DisableCrossHairAfterSomeTime()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _CrossHair.SetActive(false);
+    }
     #endregion
 
 
@@ -135,7 +141,10 @@ public class UIManager : MonoBehaviour
     private void SetUpValuesFromDisk()
     {
         if(SaveData.Instance.GetAKBool()) AKUI.SetActive(true);
+        else AKUI.SetActive(false);
+
         if (SaveData.Instance.GetShotGunBool()) ShotGunUI.SetActive(true);
+        else ShotGunUI.SetActive(false);
 
         UpdateAmmoBar(Weapon.AmmoType.AK47, SaveData.Instance.GetAKBullets());
         UpdateAmmoBar(Weapon.AmmoType.Shotgun, SaveData.Instance.GetShotGunBullets());
@@ -185,7 +194,10 @@ public class UIManager : MonoBehaviour
         _CrossHair.SetActive(false);
         _LoadOutParent.SetActive(false);
         _carGearUI.SetActive(false);
+        StartCoroutine(DisableCrossHairAfterSomeTime());
     }
+
+    
 
     #endregion
 
@@ -384,6 +396,7 @@ public class UIManager : MonoBehaviour
 
     public void ObjectiveBookToggle()
     {
+        AudioManager.Instance.PlaySFX("ToggleObjective");
         _showObjective = !_showObjective;
         _Objective.SetBool("ShowObjective", _showObjective);
         GameManager.Instance.SetGamePauseStatus(_showObjective);

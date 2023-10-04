@@ -10,6 +10,9 @@ public class ZombieCounter : MonoBehaviour
 {
     [SerializeField] Notification _notif;
     [SerializeField] GameObject _enemyBoss;
+    bool _isEnemiesDead;
+    bool _isBossDead;
+
    
     private void Start()
     {
@@ -32,6 +35,8 @@ public class ZombieCounter : MonoBehaviour
             if (child.gameObject.activeSelf) return; //if any of the children happens to be active in scene, return
         }
 
+        _isEnemiesDead = true;
+
         StartCoroutine(SpawnBoss());
         UIManager.Instance.TriggerNotification(_notif);
         ObjectiveManager.Instance.UpdateObjectivePage(13, 0, true);
@@ -39,12 +44,14 @@ public class ZombieCounter : MonoBehaviour
         SaveData.Instance.SetIsBossLevel(true);
         FindAnyObjectByType<EventManager>().OnCheckPointReachedEvent();
         CancelInvoke();
-        
     }
 
     IEnumerator SpawnBoss()
     {
-        yield return new WaitForSeconds(60); 
+        yield return new WaitForSeconds(60); //wait for cutscene to end
         _enemyBoss.SetActive(true);
     }
+
+    public bool AreEnemiesDead() => _isEnemiesDead;
+    public bool IsBossDead() => _isBossDead;
 }

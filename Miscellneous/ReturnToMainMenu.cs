@@ -5,6 +5,6 @@ public class ReturnToMainMenu : MonoBehaviour
 {
     public void ReturnToMainMenuFunc()  
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(0);  
     }
 }

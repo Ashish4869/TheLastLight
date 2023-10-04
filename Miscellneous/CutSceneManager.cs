@@ -1,5 +1,4 @@
-
-using System;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.Video;
 
@@ -60,6 +59,24 @@ public class CutSceneManager : MonoBehaviour
         if (!GameManager.Instance.CanPlayCutscene())
         {
             return;
+        }
+
+        //Harding coding values for Level 3, can't help it
+        if(SceneManager.GetActiveScene().buildIndex == 3)
+        {
+            ZombieCounter zc = FindAnyObjectByType<ZombieCounter>();
+
+            _currentCutsceneIndex = 1;
+
+            if(zc.IsBossDead())
+            {
+                _currentCutsceneIndex = 2;
+            }
+
+            if(zc.AreEnemiesDead())
+            {
+                _currentCutsceneIndex = 1;
+            }
         }
 
         _videoPlayer.enabled = true;

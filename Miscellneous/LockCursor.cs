@@ -11,7 +11,7 @@ public class LockCursor : MonoBehaviour
 
     private void Start()
     {
-        if(SceneManager.GetActiveScene().buildIndex == 0)
+        if(SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 4)
         {
             EnableCursor();
             return;
@@ -19,8 +19,11 @@ public class LockCursor : MonoBehaviour
 
         UpdateCursorLock();
     }
+
     private void Update()
     {
+        if (SceneManager.GetActiveScene().buildIndex == 0 || SceneManager.GetActiveScene().buildIndex == 4) return;
+
         if (GameManager.Instance.DialougeStatus()) return;
 
         if (Input.GetKeyDown(KeyCode.Escape)) UpdateCursorLock();

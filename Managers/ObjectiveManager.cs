@@ -360,6 +360,7 @@ public class ObjectiveManager : MonoBehaviour
         if (CanRunObjective)
         {
             UIManager.Instance.TriggerNotification(notification);
+            AudioManager.Instance.PlaySFX("ObjectiveComplete"); 
             CompleteObjective(objectiveToComplete);
             FindAnyObjectByType<EventManager>().OnCheckPointReachedEvent();
         }
