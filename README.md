@@ -10,6 +10,6 @@ Play the game and find out! <br/>
 https://github.com/Ashish4869/TheLastLight/assets/68268366/3dc8c430-13f4-4455-af7a-1cc0b4c03cda
 
 # Play the Game!
-<a href="https://akk-3211.itch.io/sign-sensei">![Download](./lastlight.jpg)</a>
+<a href="https://akk-3211.itch.io/the-last-light">![Download](./lastlight.jpg)</a>
 
 
