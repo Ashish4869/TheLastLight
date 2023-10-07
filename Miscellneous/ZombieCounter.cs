@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,31 +14,45 @@ public class ZombieCounter : MonoBehaviour
     bool _isEnemiesDead;
     bool _isBossDead;
 
+
    
     private void Start()
     {
-        if(GameManager.Instance.HasValueFromDisk())
+        _enemyBoss.SetActive(false);
+        if (GameManager.Instance.HasValueFromDisk())
         {
-            if(SaveData.Instance.GetIsBossLevel())
+            SetUpValuesFromDisk();
+            if (SaveData.Instance.GetIsBossLevel())
             {
-                _enemyBoss.SetActive(true);
                 ObjectiveManager.Instance.UpdateObjectivePage(13, 0, true);
                 return;
             }
         }
-        InvokeRepeating("CheckIfAllZombieDead", 10, 5);
+
+        if(!_isEnemiesDead)
+        {
+            InvokeRepeating("CheckIfAllZombieDead", 10, 5);
+        }
+       
+    }
+
+    private void SetUpValuesFromDisk()
+    {
+        _isEnemiesDead = SaveData.Instance.GetIsLevel3ZombiesDead();
+        _isBossDead = SaveData.Instance.GetIsLevel3BossDead();
     }
 
     void CheckIfAllZombieDead()
-    {
+    {   
         foreach (Transform child in transform)
         {
             if (child.gameObject.activeSelf) return; //if any of the children happens to be active in scene, return
         }
 
         _isEnemiesDead = true;
+        SaveData.Instance.SetIsLevel3ZombiesDead(_isEnemiesDead);
 
-        StartCoroutine(SpawnBoss());
+        
         UIManager.Instance.TriggerNotification(_notif);
         ObjectiveManager.Instance.UpdateObjectivePage(13, 0, true);
         GameManager.Instance.PlayCutscene();
@@ -46,9 +61,8 @@ public class ZombieCounter : MonoBehaviour
         CancelInvoke();
     }
 
-    IEnumerator SpawnBoss()
+    public void SpawnBoss() //is called when the second cutscene is over
     {
-        yield return new WaitForSeconds(60); //wait for cutscene to end
         _enemyBoss.SetActive(true);
     }
 

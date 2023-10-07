@@ -195,6 +195,11 @@ public class GameManager : MonoBehaviour
         _shouldPlayCutscene = false;
         SaveData.Instance.SetCanPlayCutscene(_shouldPlayCutscene);
         _levelLoader.SetActive(true);
+
+        if(_currentLevel == 3 && SaveData.Instance.GetIsLevel3ZombiesDead())
+        {
+            FindAnyObjectByType<ZombieCounter>().SpawnBoss();
+        }
     }
 
     public bool CanPlayCutscene() => _shouldPlayCutscene;
@@ -268,7 +273,11 @@ public class GameManager : MonoBehaviour
 
         //Game Manager Data
         SaveData.Instance.SetCurrentLevel(data._currentLevel);
+
+        //Car
         SaveData.Instance.SetIsInCarBool(data._isInCar);
+        Vector3 carPosition = new Vector3(data._carPosx, data._carPosY, data._carPosZ);
+        SaveData.Instance.SetCarPosition(carPosition);
 
         //CutsceneData
         SaveData.Instance.SetCutsceneIndex(data._cutsceneIndex);
@@ -290,8 +299,10 @@ public class GameManager : MonoBehaviour
         Vector3 position = new Vector3(data._playerPosX, data._playerPosY, data._playerPosZ);
         SaveData.Instance.SetPlayerPosition(position);
 
-        //Enemy data
+        //Enemy data / level 3 data
         SaveData.Instance.SetIsBossLevel(data._isBossLevel);
+        SaveData.Instance.SetIsLevel3ZombiesDead(data._isLevel3ZombiesDead);
+        SaveData.Instance.SetIsLevel3BossDead(data._isLevel3BossDead);
     }
 
     private void OnDestroy()

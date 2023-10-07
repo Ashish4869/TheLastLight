@@ -48,12 +48,17 @@ public class CarMovement : MonoBehaviour
 
         EventManager.OnStartCutscene += DisableCarbeforeCutscene;
         EventManager.OnEndCutscene += EnableCarAfterCutscene;
+        EventManager.OnCheckPointReached += SaveCarPosition;
     }
+
+   
 
     private void SetUpCarFromDisk()
     {
        if(GameManager.Instance.HasValueFromDisk())
        {
+            transform.position = SaveData.Instance.GetCarPosition();
+
             if(SaveData.Instance.GetIsInCarBool() == false)
             {
                 GetOutOfCar();
@@ -96,6 +101,7 @@ public class CarMovement : MonoBehaviour
     {
         EventManager.OnStartCutscene -= DisableCarbeforeCutscene;
         EventManager.OnEndCutscene -= EnableCarAfterCutscene;
+        EventManager.OnCheckPointReached -= SaveCarPosition;
     }
 
     // Update is called once per frame
@@ -121,6 +127,10 @@ public class CarMovement : MonoBehaviour
     #endregion
 
     #region Private Methods
+    private void SaveCarPosition()
+    {
+        SaveData.Instance.SetCarPosition(transform.position);
+    }
     private void CheckForInput()
     {
         if (Input.GetKeyDown(KeyCode.E) || _carTotalled) //Get out of the car

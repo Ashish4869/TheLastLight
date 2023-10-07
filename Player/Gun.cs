@@ -29,6 +29,7 @@ public class Gun : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SetUpEvents();
         foreach (Weapon gun in _loadout)
         {
             gun.Initialise();
@@ -38,8 +39,9 @@ public class Gun : MonoBehaviour
 
         PlayerEyes = GameObject.Find("PlayerHead/PlayerEyes").GetComponent<Transform>();
         EquipGun(1);
-        SetUpEvents();
     }
+
+   
 
     // Update is called once per frame
     void Update()
@@ -120,6 +122,7 @@ public class Gun : MonoBehaviour
     #endregion
 
     #region Private Methods
+
     void Die()
     {
         enabled = false;
@@ -571,7 +574,10 @@ public class Gun : MonoBehaviour
     }
 
     public void EnableRunningInaccuracy() => _loadout[_currentIndex].RUNShift(true);
-    public void DisableRunningAccuracy() => _loadout[_currentIndex].RUNShift(false);
+    public void DisableRunningAccuracy()
+    {
+        _loadout[_currentIndex].RUNShift(false);
+    }
 
     public void PlayerSprinting() => _isSprinting = true;
 

@@ -17,12 +17,10 @@ public class BossHandler : MonoBehaviour
     {
         _eventManager = FindAnyObjectByType<EventManager>();
     }
-    
-
-  
-
     public void HandlePostBossDeath()
     {
+        SaveData.Instance.SetIsLevel3BossDead(true);
+
         _eventManager.OnBossDefeatedEvent();
         UIManager.Instance.TriggerNotification(_notif);
         ObjectiveManager.Instance.UpdateObjectivePage(14, 0, true);

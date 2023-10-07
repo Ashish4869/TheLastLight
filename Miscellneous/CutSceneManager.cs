@@ -1,6 +1,8 @@
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using System;
 using UnityEngine.Video;
+using System.Collections;
 
 /// <summary>
 /// Manages the cutscenes to be played
@@ -42,12 +44,13 @@ public class CutSceneManager : MonoBehaviour
 
         if(_currentCutsceneIndex == _cutscenes.Length)
         {
+            AudioManager.Instance.StopPlayingAudio("HeavyBreathing");
+            AudioManager.Instance.StopPlayingAudio("HeartPounding");
             GameManager.Instance.LoadlevelAfterCutscene();
         }
         else
         {
             GameManager.Instance.CutSceneFinished();
-
         }
        
     }
@@ -61,22 +64,11 @@ public class CutSceneManager : MonoBehaviour
             return;
         }
 
-        //Harding coding values for Level 3, can't help it
+        //Harding coding values for Level 3, can't help it :(
         if(SceneManager.GetActiveScene().buildIndex == 3)
         {
-            ZombieCounter zc = FindAnyObjectByType<ZombieCounter>();
-
-            _currentCutsceneIndex = 1;
-
-            if(zc.IsBossDead())
-            {
-                _currentCutsceneIndex = 2;
-            }
-
-            if(zc.AreEnemiesDead())
-            {
-                _currentCutsceneIndex = 1;
-            }
+            StartCoroutine(StartCutsceneLittleLater());
+            return;
         }
 
         _videoPlayer.enabled = true;
@@ -85,9 +77,37 @@ public class CutSceneManager : MonoBehaviour
         SaveData.Instance.SetCutsceneIndex(_currentCutsceneIndex);
     }
 
-    
+    IEnumerator StartCutsceneLittleLater()
+    {
+        yield return new WaitForSeconds(0.25f);
+       
 
-   
+        _currentCutsceneIndex = 0;
+
+        if (SaveData.Instance.GetIsLevel3ZombiesDead())
+        {
+            _currentCutsceneIndex = 1;
+        }
+
+        if (SaveData.Instance.GetIsLevel3BossDead())
+        {
+            Debug.Log("Play last cutscene");
+            _currentCutsceneIndex = 2;
+        }
+
+       
+
+        _videoPlayer.enabled = true;
+        _cutSceneCamera.enabled = true;
+        _videoPlayer.clip = _cutscenes[_currentCutsceneIndex++];
+        SaveData.Instance.SetCutsceneIndex(_currentCutsceneIndex);
+    }
+
+
+
+
+
+
 
     #endregion
 

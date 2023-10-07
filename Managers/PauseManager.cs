@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class PauseManager : MonoBehaviour
     [SerializeField] GameObject _pauseUI;
     [SerializeField] GameObject _crossHairUI;
 
-    bool _isInCutscene = false;
+    bool _isInCutscene = false, _isDead = false;
     #endregion
 
     #region MonoBehaviour Callbacks
@@ -25,11 +26,17 @@ public class PauseManager : MonoBehaviour
 
         EventManager.OnStartCutscene += DisablePauseBeforeCutscene;
         EventManager.OnEndCutscene += EnablePauseAfterCutscene;
+        EventManager.OnPlayerDeath += DisablePauseMenu;
+    }
+
+    private void DisablePauseMenu()
+    {
+        _isDead = true;
     }
 
     private void Update()
     {
-        if (_isInCutscene || GameManager.Instance.DialougeStatus()) return;
+        if (_isInCutscene || GameManager.Instance.DialougeStatus() || _isDead) return;
 
         if(Input.GetKeyDown(KeyCode.Escape))
         {
@@ -85,6 +92,7 @@ public class PauseManager : MonoBehaviour
     {
         EventManager.OnStartCutscene -= DisablePauseBeforeCutscene;
         EventManager.OnEndCutscene -= EnablePauseAfterCutscene;
+        EventManager.OnPlayerDeath -= DisablePauseMenu;
     }
     #endregion
 

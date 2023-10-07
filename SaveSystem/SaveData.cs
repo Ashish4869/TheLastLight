@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SaveData : MonoBehaviour
@@ -44,10 +42,10 @@ public class SaveData : MonoBehaviour
    
 
     //Data to save when the player tries to save the game.
-    bool _hasAK, _hasShotGun,_isInCar, _canPlayCutscene, _isBossLevel;
+    bool _hasAK, _hasShotGun,_isInCar, _canPlayCutscene, _isBossLevel, _isLevel3ZombiesDead, _isLevel3BossDead;
     int _currentLevel,_pistolBullets, _AKBullets, _shotGunBullets, _cutsceneIndex;
     bool[] _zombieStatus, _crateStatus, _objectiveStatus, _disposableStatus;
-    float _playerPosX, _playerPosY, _playerPosZ;
+    float _playerPosX, _playerPosY, _playerPosZ, _carPosx, _carPosY, _carPosZ;
 
     //setters
     public void SetAKBool(bool condition) => _hasAK = condition;
@@ -59,6 +57,8 @@ public class SaveData : MonoBehaviour
     public void SetAKBullets(int AKBullets) => _AKBullets = AKBullets;
     public void SetShotGunBullets(int ShotGunBullets) => _shotGunBullets = ShotGunBullets;
     public void SetIsInCarBool(bool condition) => _isInCar = condition;
+    public void SetIsLevel3ZombiesDead(bool condition) => _isLevel3ZombiesDead = condition;
+    public void SetIsLevel3BossDead(bool condition) => _isLevel3BossDead = condition;
     public void SetCutsceneIndex(int index) => _cutsceneIndex = index;
     public void SetZombieStatus(bool[] zombieStatus) => _zombieStatus = zombieStatus;
     public void SetCrateStatus(bool[] crateStatus) => _crateStatus = crateStatus;
@@ -71,6 +71,13 @@ public class SaveData : MonoBehaviour
         _playerPosX = position.x;
         _playerPosY = position.y;
         _playerPosZ = position.z;
+    }
+
+    public void SetCarPosition(Vector3 position)
+    {
+        _carPosx = position.x;
+        _carPosY = position.y;
+        _carPosZ = position.z;
     }
    
 
@@ -85,6 +92,8 @@ public class SaveData : MonoBehaviour
     public int GetAKBullets() => _AKBullets;
     public bool GetIsInCarBool() => _isInCar;
     public bool GetIsBossLevel() => _isBossLevel;
+    public bool GetIsLevel3ZombiesDead() => _isLevel3ZombiesDead;
+    public bool GetIsLevel3BossDead() => _isLevel3BossDead;
 
     public bool GetCanPlayCutscene() => _canPlayCutscene;
 
@@ -101,6 +110,12 @@ public class SaveData : MonoBehaviour
     {
         Vector3 postion = new Vector3(_playerPosX, _playerPosY, _playerPosZ);
         return postion;
+    }
+
+    public Vector3 GetCarPosition()
+    {
+        Vector3 position = new Vector3(_carPosx, _carPosY, _carPosZ);
+        return position;
     }
 
     //Clearing data that should not persist between levels
