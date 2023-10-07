@@ -11,6 +11,7 @@ public class Helicopter : MonoBehaviour
     public float _speed = 0.0000000001f;
     bool _isBossDeath = false;
     int _wayPointIndex = 0;
+    public AudioSource source;
 
     private void Start()
     {
@@ -23,9 +24,7 @@ public class Helicopter : MonoBehaviour
         if (_wayPointIndex == _wayPoints.Length) return; //if we exhausted the array, return
 
         transform.LookAt(_wayPoints[0].position);
-        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0); ;
-
-
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
 
         if (Vector3.Distance(transform.position,_wayPoints[_wayPointIndex].position) > 2)
         {
@@ -41,6 +40,12 @@ public class Helicopter : MonoBehaviour
     void BossDefeated()
     {
         _isBossDeath = true;
+        source.Stop();
+    }
+
+    public void PlayBossMusic()
+    {
+        source.Play();
     }
 
     private void OnDisable()

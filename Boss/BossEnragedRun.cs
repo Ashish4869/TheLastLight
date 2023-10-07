@@ -12,6 +12,7 @@ public class BossEnragedRun : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         _player = GameObject.FindGameObjectWithTag("Player").transform;
+        FindAnyObjectByType<EnemySoundManager>().PlayBossScream();
         _enemyAI = animator.GetComponent<EnemyAI>();
         _bossTransform = animator.GetComponent<Transform>();
         _enemyAI.SetChaseSpeed(10f);

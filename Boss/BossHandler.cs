@@ -20,7 +20,7 @@ public class BossHandler : MonoBehaviour
     public void HandlePostBossDeath()
     {
         SaveData.Instance.SetIsLevel3BossDead(true);
-
+        GetComponentInChildren<EnemySoundManager>().DeathSound();
         _eventManager.OnBossDefeatedEvent();
         UIManager.Instance.TriggerNotification(_notif);
         ObjectiveManager.Instance.UpdateObjectivePage(14, 0, true);

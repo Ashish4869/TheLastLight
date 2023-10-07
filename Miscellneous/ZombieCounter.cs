@@ -63,6 +63,7 @@ public class ZombieCounter : MonoBehaviour
 
     public void SpawnBoss() //is called when the second cutscene is over
     {
+        FindAnyObjectByType<Helicopter>().PlayBossMusic();
         _enemyBoss.SetActive(true);
     }
 

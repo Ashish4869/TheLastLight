@@ -21,7 +21,7 @@ public class Gun : MonoBehaviour
     bool _isReloading, _cantShoot, _firstBullet, _isSprinting, _isInCutscene = false;
     bool _OneGetMouseButtonUp;
     int _currentIndex = 99;
-    bool _HasAK47 = false, _HasShotGun = false;
+    bool _HasAK47 = true, _HasShotGun = true; //change this later
     float _recoil;
     #endregion
 

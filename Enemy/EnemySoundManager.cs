@@ -54,6 +54,7 @@ public class EnemySoundManager : MonoBehaviour
     {
         while(true)
         {
+            Debug.Log("Play Idle sound");
             _source.clip = _idle;
             _source.Play();
             _waitbetweenSounds = Random.Range(7, 10);
@@ -65,12 +66,20 @@ public class EnemySoundManager : MonoBehaviour
     {
         while(true)
         {
+            Debug.Log("Play Chase sound");
             _source.clip = _chase;
             _source.Play();
             _waitbetweenSounds = Random.Range(4, 7);
             yield return new WaitForSeconds(_waitbetweenSounds);
         }
        
+    }
+
+    public void PlayBossScream()
+    {
+        _source.clip = _idle;
+        _source.loop = false;
+        _source.Play();
     }
 
     public void DeathSound()
